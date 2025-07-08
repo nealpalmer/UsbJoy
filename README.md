@@ -69,6 +69,8 @@ Toadd:
 
 **Manufacturing suggestions:**
 - [oshpark.com](https://oshpark.com/) has wonderful pricing for qty3 of 2and4 layer boards and ships in 10 calendar days for almost everything (and you can pay more to get it earlier, or pay for faster shipping)
+  - [UsbJoy_R2](https://oshpark.com/shared_projects/QPZCB1ZT) board order
+  - [SmartButton_R2](https://oshpark.com/shared_projects/OV1uAkH7) board order
 - A 3d-printer can make the UsbJoy board attach directly to the screw threads of one of the buttons.  A couple of sample mount's source files are here.
 - Testing for button functionality can be done in windows with the built-in "USB game controllers"->properties window to see the buttons that get pressed. NEED A PICTURE HERE!
 - You can extract a 3d model of the boards from kicad to use in your 3d cad system.
