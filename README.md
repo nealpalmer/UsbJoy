@@ -9,6 +9,8 @@ Toadd:
 - design files for firmware, kicad, 3d, software
 - upload 3d design files to makerworld
 - write the software application for programming the pic
+- Create a bill of materials for all parts necessary, with ordering links (include arduino, 30mm led, cables, jst cable ends, 600ppm encoder)
+- Add mechanical parts to make the spinning rotary encoder.
 
 ![image](https://github.com/user-attachments/assets/ea97f88b-f23c-439b-81eb-e5cb5ec8e4a8)
 ![image](https://github.com/user-attachments/assets/5b4c13d2-de07-41db-afa2-7e9a51e008a0)
@@ -25,6 +27,10 @@ Toadd:
 - ESD diodes on all 16 3-pin connectors
 - Configuration of SmartButton configuration done through the USB-UART interface.  Some settings are saved in EEPROM (Neopixel config, ...) , some are temporary (LED values).
 - Coming soon: Programming of PIC micro-controller done over USB-UART with button press required.
+- Colored JST-XH 3-pin connectors are available on [aliexpress.com](https://www.aliexpress.us/item/3256806937445015.html)
+- Colored JST-XH terminal 3-pin connectors are available on [aliexpress.com](https://www.aliexpress.us/item/3256804014172692.html)
+- pre-crimped 3-pin cables are available on [aliexpress.com](https://www.aliexpress.us/item/3256807213104605.html)  Just be aware that the pins have to be removed, and swapped so that it is a 1:1 cable instead of a 1:3 cable (or you are going to connect GND to 5V, and destroy your SmartButtons).
+- pre-crimped 10-pin cables are available on [amazon.com](https://www.amazon.com/dp/B0B2RCW5JF) And you would have to replace the connectors with a 3-pin version (cheap, and comes from US, so comes quickly).
 
 **SmartButton features**
 - Uses 30mm illuminated arcade buttons. [https://www.amazon.com/EG-STARTS-Illuminated-Buttons-Raspberry/dp/B01N11BDX9](https://www.amazon.com/EG-STARTS-Illuminated-Buttons-Raspberry/dp/B01N11BDX9)
@@ -43,11 +49,11 @@ Toadd:
 - 9: you can add more if you want...
 
 **NeoPixel**
-- Uses an off-the-shelf neopixel array (WS2812B 5V leds)
+- Uses an off-the-shelf neopixel array (WS2812B 5V leds) [amazon.com](https://www.amazon.com/dp/B09PBHJG6G) [ring_of_leds](https://www.amazon.com/dp/B08GPWVD57)
 - Takes over Digital input #11 (the Yellow connector)
 - Color choices:
 - 0x00-0x3f: Black-to-White solid color choices (4 values per R,G,B)
-- 0x80-0xff: Single white LED on (can be made to match the rotary encoder)
+- 0x80-0xff: Single white LED on (can be set to match the rotary encoder)
 - Rainbow
 - Moving Rainbow
 
@@ -66,7 +72,11 @@ Toadd:
 - A 3d-printer can make the UsbJoy board attach directly to the screw threads of one of the buttons.  A couple of sample mount's source files are here.
 - Testing for button functionality can be done in windows with the built-in "USB game controllers"->properties window to see the buttons that get pressed. NEED A PICTURE HERE!
 - You can extract a 3d model of the boards from kicad to use in your 3d cad system.
-- digikey has all of the electrical components necessary
+- digikey has all of the electrical components necessary (except for the LED and Arduino board).
+- The arduino pro micro has a 0.5A fuse on it.  The bottom side of it will NOT be accessible.  If that 0.5A fuse is on the bottom side, and you have over current, then your boards will not be salvageable.  So get a version that has all the components on the top side.
+- The discrete components are 0603 packages for easier soldering.
+- Get some illuminated magnifying glasses for ease of soldering of small components. [amazon.com](https://www.amazon.com/YOCTOSUN-Magnifying-Rechargeable-1-5X-3-5X-Magnifier/dp/B0D8J3TYL3)
+- Solder all of the SMT components before any thru-hole components.  Required for both boards, because some of the thru-hole soldering will make SMT parts unreachable.
 
 **How to program Arduino Pro Micro's Atmega32U4 (the USB device):**
 - Run The Arduino GUI version X.XX (whatever is current as of May 2025 works).
