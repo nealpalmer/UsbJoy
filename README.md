@@ -5,7 +5,8 @@ This is a couple of circuit boards that make up a fancy USB joystick controller 
 It has both a HID joystick interface and a HID uart interface presented to the computer.
 
 ![image](https://github.com/user-attachments/assets/ea97f88b-f23c-439b-81eb-e5cb5ec8e4a8)
-
+![image](https://github.com/user-attachments/assets/5b4c13d2-de07-41db-afa2-7e9a51e008a0)
+![image](https://github.com/user-attachments/assets/e703f007-66c7-4fff-99f2-dc9885223b1f)
 
 Features:
 - 12 Digital inputs for buttons (3-pin White/Yellow/Green JST XH: 5V, signal with 10k pullup, GND)
