@@ -4,6 +4,12 @@ USB Joystick Controller 12Digital/SmartButton, 4Analog, 1Rotary, 1NeoPixel
 This is a couple of circuit boards that make up a fancy USB joystick controller for FRC #2984.
 It has both a HID joystick interface and a HID uart interface presented to the computer.
 
+Toadd:
+- mechanical drawing of the board (wid, hei, hole locations)
+- design files for firmware, kicad, 3d, software
+- upload 3d design files to makerworld
+- write the software application for programming the pic
+
 ![image](https://github.com/user-attachments/assets/ea97f88b-f23c-439b-81eb-e5cb5ec8e4a8)
 ![image](https://github.com/user-attachments/assets/5b4c13d2-de07-41db-afa2-7e9a51e008a0)
 ![image](https://github.com/user-attachments/assets/e703f007-66c7-4fff-99f2-dc9885223b1f)
@@ -13,7 +19,7 @@ It has both a HID joystick interface and a HID uart interface presented to the c
 - 4 Analog inputs for joysticks or linear/rotary potentiometers (10k ohms) (3-pin Blue JST XH: 5V, signal with 100k+100k pullup+pulldown, GND).
 - 1 Digital input can be used to drive a NeoPixel string (be careful of 500mA fuse) (3-pin Yellow)
 - 4-pin JST XH rotary encoder for Z-axis (600 ppr*4phase = 2400/rev resolution assumed)
-- Arduino Pro Micro USB-C 5V ATmega32U4 controller board used for ease of soldering
+- Arduino Pro Micro USB-C 5V ATmega32U4 controller board used for ease of soldering.  Make sure to get one with the fuse on the TOP side of the board (i.e. no bottom side components).  [amazon.com](https://www.amazon.com/gp/product/B0B6HYLC44)
 - SmartButton for all 12 Digital inputs
 - 4 Digital connectors (Green) can have their 5V power switched on/off for use with simple led outputs (SmartButton requires it to always be powered on).
 - ESD diodes on all 16 3-pin connectors
@@ -56,9 +62,11 @@ It has both a HID joystick interface and a HID uart interface presented to the c
 - software/
 
 **Manufacturing suggestions:**
-- oshpark.com has wonderful pricing for qty3 of 2and4 layer boards and ships in 10 calendar days for almost everything (and you can pay more to get it earlier, or pay for faster shipping)
-- A 3d-printer can make the UsbJoy board attach directly to the screw threads of one of the buttons.  A couple of sample design
+- [oshpark.com](https://oshpark.com/) has wonderful pricing for qty3 of 2and4 layer boards and ships in 10 calendar days for almost everything (and you can pay more to get it earlier, or pay for faster shipping)
+- A 3d-printer can make the UsbJoy board attach directly to the screw threads of one of the buttons.  A couple of sample mount's source files are here.
 - Testing for button functionality can be done in windows with the built-in "USB game controllers"->properties window to see the buttons that get pressed. NEED A PICTURE HERE!
+- You can extract a 3d model of the boards from kicad to use in your 3d cad system.
+- digikey has all of the electrical components necessary
 
 **How to program Arduino Pro Micro's Atmega32U4 (the USB device):**
 - Run The Arduino GUI version X.XX (whatever is current as of May 2025 works).
