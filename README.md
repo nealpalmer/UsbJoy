@@ -8,7 +8,7 @@ It has both a HID joystick interface and a HID uart interface presented to the c
 ![image](https://github.com/user-attachments/assets/5b4c13d2-de07-41db-afa2-7e9a51e008a0)
 ![image](https://github.com/user-attachments/assets/e703f007-66c7-4fff-99f2-dc9885223b1f)
 
-Features:
+**Features:**
 - 12 Digital inputs for buttons (3-pin White/Yellow/Green JST XH: 5V, signal with 10k pullup, GND)
 - 4 Analog inputs for joysticks or linear/rotary potentiometers (10k ohms) (3-pin Blue JST XH: 5V, signal with 100k+100k pullup+pulldown, GND).
 - 1 Digital input can be used to drive a NeoPixel string (be careful of 500mA fuse) (3-pin Yellow)
@@ -20,8 +20,9 @@ Features:
 - Configuration of SmartButton configuration done through the USB-UART interface.  Some settings are saved in EEPROM (Neopixel config, ...) , some are temporary (LED values).
 - Coming soon: Programming of PIC micro-controller done over USB-UART with button press required.
 
-SmartButton
-- Uses 30mm illuminated arcade buttons.
+**SmartButton features**
+- Uses 30mm illuminated arcade buttons. [https://www.amazon.com/EG-STARTS-Illuminated-Buttons-Raspberry/dp/B01N11BDX9](https://www.amazon.com/EG-STARTS-Illuminated-Buttons-Raspberry/dp/B01N11BDX9)
+- 24mm buttons might work, but haven't tested them yet.
 - 3-pin interface (5V, signal, GND)
 - LED options
 - 0: OFF
@@ -35,7 +36,7 @@ SmartButton
 - 8: Button toggles state each time it is pressed: LED flashes when in 'pressed' state
 - 9: you can add more if you want...
 
-NeoPixel
+**NeoPixel**
 - Uses an off-the-shelf neopixel array (WS2812B 5V leds)
 - Takes over Digital input #11 (the Yellow connector)
 - Color choices:
@@ -43,3 +44,52 @@ NeoPixel
 - 0x80-0xff: Single white LED on (can be made to match the rotary encoder)
 - Rainbow
 - Moving Rainbow
+
+**Files included:**
+- UsbJoy_d12_a4_r-rev2/: Kicad layout files, and gerbers
+- SmartButton-rev2/: Kicad layout files, and gerbers
+- mechanics/: openscad & STL files for a couple of mounts for UsbJoy using the SmartButton
+- software/SmartButton_firmware/:
+- software/UsbJoy_firmware/: firmware for the Atmega32U4 microcontroller
+- software/UsbJoy_pic_firmware/: firmware 
+- software/program_pic/: small application to program the pic16f1778 on UsbJoy
+- software/
+
+**Manufacturing suggestions:**
+- oshpark.com has wonderful pricing for qty3 of 2and4 layer boards and ships in 10 calendar days for almost everything (and you can pay more to get it earlier, or pay for faster shipping)
+- A 3d-printer can make the UsbJoy board attach directly to the screw threads of one of the buttons.  A couple of sample design
+- Testing for button functionality can be done in windows with the built-in "USB game controllers"->properties window to see the buttons that get pressed. NEED A PICTURE HERE!
+
+**How to program Arduino Pro Micro's Atmega32U4 (the USB device):**
+- Run The Arduino GUI version X.XX (whatever is current as of May 2025 works).
+- Load the *.ino file
+- Set up the board to be "leonardo". -- need to verify this
+- Plug in the board into USB
+- Download from the Arduino GUI.
+- Programming does not clear the EEPROM, so any settings should remain unaffected.
+
+**How to program pic16f1778 on UsbJoy:**
+- Run the Microchip IDE (what version minimum?)
+- Load the project
+- Compile the project for production
+- Using PICKIT5: Use one of the current programmers pickit5 is probably preferred, and plug it into the 5-pin holes on the bottom side of the board.  And have the IDE program the device.
+- Using USB: remove cables from 3 connectors (A, B, C), hold down the button on the board, and run "program_pic pic.hex", then release the button after programming completion
+
+**How to program pic16f15213 on SmartButton:**
+- Run the Microchip IDE (what version minimum?)
+- Load the project
+- Compile the project for production
+- Using PICKIT5: Make sure the button isn't pressed, Connect the 3-pin cable to the UsbJoy (for 5V power), plug the pickit5 into the 5-pin holes on the SmartButton board.  And have the IDE program the device.
+
+**How to initially configure UsbJoy:**
+- Connect USB to a PC.
+- Open a terminal program (I like [MobaXterm](https://mobaxterm.mobatek.net/)), and connect to the correct com port (use windows device manager, and find the 'leonardo' port listed) (linux: 'dmesg' to find the correct '/dev/ttyUSB#' when you plug into USB).
+- Any baud rate is fine, because it is a virtual serial port.
+- 'h'+enter to get the help menu
+- All settings commands are "letter+hex_number+enter".
+- Important EEPROM settings to run:
+- "m#val" to set the SmartLed power-on setting for that port (not for the SmartLed itself) to the desired LED pattern (and toggle functionality)
+- "n#" to set the number of neopixel leds in the string - set to "n0" to indicate that there isn't a neopixel string.
+- "v#" to set the power-on setting for the Green ports - probably want them always on "vF" unless they are being used in some interesting way
+- 
+  
