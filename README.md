@@ -36,17 +36,18 @@ To add to this readme:
 - Uses 30mm illuminated arcade buttons. [https://www.amazon.com/EG-STARTS-Illuminated-Buttons-Raspberry/dp/B01N11BDX9](https://www.amazon.com/EG-STARTS-Illuminated-Buttons-Raspberry/dp/B01N11BDX9)
 - 24mm buttons might work, but haven't tested them yet.
 - 3-pin interface (5V, signal, GND)
+- Some solder jumpers can be filled, and some jumpers cut to turn a smart button into a dumb button (i.e. no 5V).
 - LED options
-- 0: OFF
-- 1: ON
-- 2: ON for 100ms when button gets pressed
-- 3: ON while button is pressed
-- 4: FLASHING 100ms on/100ms off
-- 5: SIN()
-- 6: FLASHING while button is pressed
-- 7: Button toggles state each time it is pressed: LED lit when in 'pressed' state
-- 8: Button toggles state each time it is pressed: LED flashes when in 'pressed' state
-- 9: you can add more if you want...
+  - 0: OFF
+  - 1: ON
+  - 2: ON for 100ms when button gets pressed
+  - 3: ON while button is pressed
+  - 4: FLASHING 100ms on/100ms off
+  - 5: SIN()
+  - 6: FLASHING while button is pressed
+  - 7: Button toggles state each time it is pressed: LED lit when in 'pressed' state
+  - 8: Button toggles state each time it is pressed: LED flashes when in 'pressed' state
+  - 9: you can add more if you want...
 
 **NeoPixel**
 - Uses an off-the-shelf neopixel array (WS2812B 5V leds) [amazon.com](https://www.amazon.com/dp/B09PBHJG6G) [ring_of_leds](https://www.amazon.com/dp/B08GPWVD57)
