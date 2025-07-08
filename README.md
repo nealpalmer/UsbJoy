@@ -34,3 +34,12 @@ SmartButton
 - 7: Button toggles state each time it is pressed: LED lit when in 'pressed' state
 - 8: Button toggles state each time it is pressed: LED flashes when in 'pressed' state
 - 9: you can add more if you want...
+
+NeoPixel
+- Uses an off-the-shelf neopixel array (WS2812B 5V leds)
+- Takes over Digital input #11 (the Yellow connector)
+- Color choices:
+- 0x00-0x3f: Black-to-White solid color choices (4 values per R,G,B)
+- 0x80-0xff: Single white LED on (can be made to match the rotary encoder)
+- Rainbow
+- Moving Rainbow
