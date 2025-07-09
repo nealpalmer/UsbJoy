@@ -20,6 +20,7 @@ To add to this readme:
 **Features:**
 - 12 Digital inputs for buttons (3-pin White/Yellow/Green JST XH: 5V, signal with 10k pullup, GND)
   - 12 is probably enough buttons for a FRC operator panel.  We use 2x of these on the operator panel, and 1 on the driver panel.
+  - simple buttons and switches can be used, just connect to the 'signal' and 'GND' pins of the 3-pin connector, and ignore the '5V' pin.
 - 4 Analog inputs for joysticks or linear/rotary potentiometers (10k ohms) (3-pin Blue JST XH: 5V, signal with 100k+100k pullup+pulldown, GND).
   - 1 Analog [joystick](https://www.amazon.com/dp/B08CGYGMJL) for driving (X & Y)
   - 2 [linear potentiometers](https://www.amazon.com/dp/B07HNY7VWC) are useful for controlling speeds or small adjustments to some positioning
