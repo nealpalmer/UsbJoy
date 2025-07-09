@@ -2,7 +2,7 @@
 USB Joystick Controller 12Digital/SmartButton, 4Analog, 1Rotary, 1NeoPixel
 
 This is a couple of circuit boards that make up a fancy USB joystick controller for FRC #2984.
-It has both a HID joystick interface and a HID uart interface presented to the computer.
+It has both a HID joystick interface and a HID uart interface presented to the computer (i.e. it works in Windows and Linux).
 
 To add to this readme:
 - mechanical drawing of the board (wid, hei, hole locations)
