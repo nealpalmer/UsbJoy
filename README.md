@@ -21,7 +21,7 @@ To add to this readme:
 - 12 Digital inputs for buttons (3-pin White/Yellow/Green JST XH: 5V, signal with 10k pullup, GND)
   - 12 is probably enough buttons for a FRC operator panel.  We use 2x of these on the operator panel, and 1 on the driver panel.
 - 4 Analog inputs for joysticks or linear/rotary potentiometers (10k ohms) (3-pin Blue JST XH: 5V, signal with 100k+100k pullup+pulldown, GND).
-  - 1 Analog joystick for driving (X & Y)
+  - 1 Analog [joystick](https://www.amazon.com/dp/B08CGYGMJL) for driving (X & Y)
   - 2 [linear potentiometers](https://www.amazon.com/dp/B07HNY7VWC) are useful for controlling speeds or small adjustments to some positioning
   - There are more analog input pins that could be used for more analog inputs, but that is left upto the user to figure out if they care.  But it is probably simpler/cheaper just to make more of these boards.
 - 1 Digital input can be used to drive a NeoPixel string (be careful of 500mA fuse) (3-pin Yellow)
