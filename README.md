@@ -54,6 +54,11 @@ To add to this readme:
 - pre-crimped 3-pin cables are available on [aliexpress.com](https://www.aliexpress.us/item/3256807213104605.html)  Just be aware that the pins have to be removed, and swapped so that it is a 1:1 cable instead of a 1:3 cable (or you are going to connect GND to 5V, and destroy your SmartButtons).
 - pre-crimped 10-pin cables are available on [amazon.com](https://www.amazon.com/dp/B0B2RCW5JF) And you would have to replace the connectors with a 3-pin version (cheap, and comes from US, so comes quickly).
 
+**Rotary Encoder**
+- Uses a simple 4-pin {5V,A,B,GND} [encoder](https://www.amazon.com/dp/B01MZ4V1XP)
+- 600pulses/revolution * 4 edges per pulse = 2400 positions/revolution (about 1/6degree resolution)
+- Returns 0-2399 as the Z-axis to the Joystick HID interface.
+
 **SmartButton features**
 - About $1 for circuit board+cpu+connector.  About $2 per illuminated arcade button.
 - Designed to solder directly to 30mm illuminated arcade buttons. [amazon EG-Starts Illuminated 30mm](https://www.amazon.com/EG-STARTS-Illuminated-Buttons-Raspberry/dp/B01N11BDX9) [Aliexpress 24mm&30mm](https://www.aliexpress.us/item/3256804217382377.html) [Coin/1P/2P](https://www.aliexpress.us/item/2251832825468632.html) [AutoRGB](https://www.aliexpress.us/item/3256805580977933.html) [50pack 28mm](https://www.aliexpress.us/item/3256805775007172.html) [Free ship $10](https://www.aliexpress.us/item/2251832849688596.html)
