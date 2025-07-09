@@ -53,7 +53,7 @@ To add to this readme:
 - pre-crimped 10-pin cables are available on [amazon.com](https://www.amazon.com/dp/B0B2RCW5JF) And you would have to replace the connectors with a 3-pin version (cheap, and comes from US, so comes quickly).
 
 **SmartButton features**
-- Uses 30mm illuminated arcade buttons. [amazon EG-Starts Illuminated 30mm](https://www.amazon.com/EG-STARTS-Illuminated-Buttons-Raspberry/dp/B01N11BDX9)
+- Uses 30mm illuminated arcade buttons. [amazon EG-Starts Illuminated 30mm](https://www.amazon.com/EG-STARTS-Illuminated-Buttons-Raspberry/dp/B01N11BDX9) [Aliexpress 24mm&30mm](https://www.aliexpress.us/item/3256804217382377.html) [Coin/1P/2P](https://www.aliexpress.us/item/2251832825468632.html) [AutoRGB](https://www.aliexpress.us/item/3256805580977933.html) [50pack 28mm](https://www.aliexpress.us/item/3256805775007172.html) [Free ship $10](https://www.aliexpress.us/item/2251832849688596.html)
 - 24mm illuminated buttons might work, but haven't tested them yet.
 - 3-pin interface (5V, signal, GND)
 - Some solder jumpers can be filled, and some jumpers cut to turn a smart button into a dumb button (i.e. no 5V).
