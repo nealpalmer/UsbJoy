@@ -116,11 +116,16 @@ To add to this readme:
 - Programming does not clear the EEPROM, so any settings should remain unaffected.
 
 **How to program pic16f1778 on UsbJoy:**
+- Disconnect the last 2 buttons (Yellow and white next to each other)
+- type "q1" on the uart to disable the last 2 button communications
+- type "n0" to disable the neopixel functionality
 - Run the Microchip IDE (what version minimum?)
 - Load the project
 - Compile the project for production
 - Using PICKIT5: Use one of the current programmers pickit5 is probably preferred, and plug it into the 5-pin holes on the bottom side of the board.  And have the IDE program the device.
 - Using USB: remove cables from 3 connectors (A, B, C), hold down the button on the board, and run "program_pic pic.hex", then release the button after programming completion
+- type "q0" on the uart to re-enable the last 2 button functionality
+- type "n10" to re-enable neopixel 0x10 led functionality (or change the number to your string length) - Neal fixme get rid of this...
 
 **How to program pic16f15213 on SmartButton:**
 - Run the Microchip IDE (what version minimum?)
