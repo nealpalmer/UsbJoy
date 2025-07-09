@@ -37,9 +37,10 @@ To add to this readme:
 - Arduino Pro Micro USB-C 5V ATmega32U4 controller board used for ease of soldering.
   - Make sure to get one with the fuse on the TOP side of the board (i.e. no bottom side components).  [amazon.com](https://www.amazon.com/gp/product/B0B6HYLC44)
 - SmartButton support for all 12 Digital inputs
-  - You can choose what each button looks like for infomational purposes.
-  - Flickering the button when initially pressed is simple feedback that the button should be working.
+  - You can choose what each button's LED looks like for infomational purposes.
+  - Flickering the button when initially pressed is simple feedback that the button should be working (commuincation to UsbJoy, LED works, button works, cable connected appropriately).
   - Having the button light up when it should be useable is useful (i.e. the playing piece is being held, you can now press the shoot button).
+  - Have a couple of buttons light up to indicate the state of the robot.
 - 4 Digital connectors (Green) can have their 5V power switched on/off for use with simple led outputs (SmartButton requires it to always be powered on).
   - This sounded like a great idea initially, but I don't see a use for it now...
 - ESD diodes on all 16 3-pin connectors
@@ -54,11 +55,14 @@ To add to this readme:
 - pre-crimped 10-pin cables are available on [amazon.com](https://www.amazon.com/dp/B0B2RCW5JF) And you would have to replace the connectors with a 3-pin version (cheap, and comes from US, so comes quickly).
 
 **SmartButton features**
+- About $1 for circuit board+cpu+connector.  About $2 per illuminated arcade button.
 - Designed to solder directly to 30mm illuminated arcade buttons. [amazon EG-Starts Illuminated 30mm](https://www.amazon.com/EG-STARTS-Illuminated-Buttons-Raspberry/dp/B01N11BDX9) [Aliexpress 24mm&30mm](https://www.aliexpress.us/item/3256804217382377.html) [Coin/1P/2P](https://www.aliexpress.us/item/2251832825468632.html) [AutoRGB](https://www.aliexpress.us/item/3256805580977933.html) [50pack 28mm](https://www.aliexpress.us/item/3256805775007172.html) [Free ship $10](https://www.aliexpress.us/item/2251832849688596.html)
 - 24mm illuminated buttons might work, but haven't tested them yet.
 - Other buttons could be used.  Just solder the to switch pins to the button, and the LED pins to an LED+Resistor.
 - 3-pin interface (5V, signal, GND)
-- Some solder jumpers can be filled, and some jumpers cut to turn a smart button into a dumb button (i.e. no 5V).
+- Some solder jumpers can be filled, and some jumpers cut to turn a smart button into a dumb button (i.e. no 5V present).
+- State of the led_option is stored in UsbJoy, and associated with the port.  So the buttons don't have to store their operational state.
+- Programming of pic16f15213 can be done with either PicKit5 or UsbJoy.
 - LED options
   - 0: OFF
   - 1: ON
@@ -72,7 +76,7 @@ To add to this readme:
   - 9: you can add more if you want...
 
 **NeoPixel**
-- Uses an off-the-shelf neopixel array (WS2812B 5V leds) [amazon.com](https://www.amazon.com/dp/B09PBHJG6G) [ring_of_leds](https://www.amazon.com/dp/B08GPWVD57)
+- Uses an off-the-shelf neopixel array (WS2812B 5V leds) [Strip_of_leds](https://www.amazon.com/dp/B09PBHJG6G) [ring_of_leds](https://www.amazon.com/dp/B08GPWVD57)
 - Takes over Digital input #11 (the Yellow connector)
 - You are going to have to make a cable that has the JST XH connector on the end of it.
 - You MUST pay attention to the current draw of the string.  The entire UsbJoy is limited to 500mA, and if you draw much more than that, the fuse will blow, and everything will stop working.  So make sure that the length of string can't draw too much power.
@@ -134,6 +138,7 @@ To add to this readme:
 - Load the project
 - Compile the project for production
 - Using PICKIT5: Make sure the button isn't pressed, Connect the 3-pin cable to the UsbJoy (for 5V power), plug the pickit5 into the 5-pin holes on the SmartButton board.  And have the IDE program the device.
+- Using UsbJoy: Connect 3+3+3pin cable ends into UsbJoy (match yellow,white,green connectors), connect 5-pin cable end into SmartButton.  Run "program_pic smartbutton.hex".
 
 **How to initially configure UsbJoy:**
 - Connect USB to a PC.
@@ -148,6 +153,9 @@ To add to this readme:
 - "v#" to set the power-on setting for the Green ports - probably want them always on "vF" unless they are being used in some interesting way.
 - "V#" to set the power-on DEFAULT for the Green ports (saved to EEPROM)
 
+**Future enhancements**
+- Add a 5-pin direct programming header for connecting to SmartButton (no need for weird programming cable).
+- Move QR code to top side of board.
 
 Neal Palmer,
 **FRC team #2984 Vikings Robotics,**
