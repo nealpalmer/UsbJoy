@@ -147,7 +147,7 @@ To add to this readme:
 - "V#" to set the power-on DEFAULT for the Green ports (saved to EEPROM)
 
 
-Neal Palmer
+**Neal Palmer
 FRC team #2984 Vikings Robotics
-La Jolla, CA, USA
+La Jolla, CA, USA**
   
