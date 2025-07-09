@@ -135,10 +135,11 @@ To add to this readme:
 - 'h'+enter to get the help menu
 - All settings commands are "letter+hex_number+enter".
 - Important EEPROM settings to run:
-- 'u#" to set the upper 3-bits for the virtual buttons to uniquely identify this particular board.
-- "m#val" to set the SmartLed power-on setting for that port (not for the SmartLed itself) to the desired LED pattern (and toggle functionality)
+- 'u#" to set the upper 3-bits for the virtual buttons to uniquely identify this particular board (saved to EEPROM)
+- "m#val" to set the SmartLed DEFAULT setting for that port (not for the SmartLed itself) to the desired LED pattern (and toggle functionality) (saved to EEPROM)
 - "n#" to set the number of neopixel leds in the string - set to "n0" to indicate that there isn't a neopixel string.
-- "v#" to set the power-on setting for the Green ports - probably want them always on "vF" unless they are being used in some interesting way
+- "v#" to set the power-on setting for the Green ports - probably want them always on "vF" unless they are being used in some interesting way.
+- "V#" to set the power-on DEFAULT for the Green ports (saved to EEPROM)
 
 
 Neal Palmer
