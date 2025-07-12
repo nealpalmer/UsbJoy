@@ -100,8 +100,7 @@ To add to this readme:
 - software/SmartButton_firmware/:
 - software/UsbJoy_firmware/: firmware for the Atmega32U4 microcontroller
 - software/UsbJoy_pic_firmware/: firmware 
-- software/program_pic/: small application to program the pic16f1778 on UsbJoy
-- software/
+- software/program_pic/: small application to program the pic16f1778 on UsbJoy, and pic15f15213 on SmartButton
 
 **Manufacturing suggestions:**
 - [oshpark.com](https://oshpark.com/) has wonderful pricing for qty3 of 2and4 layer boards and ships in 10 calendar days for almost everything (and you can pay more to get it earlier, or pay for faster shipping)
@@ -119,11 +118,12 @@ To add to this readme:
 - Solder all of the SMT components before any thru-hole components.  Required for both boards, because some of the thru-hole soldering will make SMT parts unreachable.
 
 **How to program Arduino Pro Micro's Atmega32U4 (the USB device):**
-- Run The Arduino GUI version X.XX (whatever is current as of May 2025 works).
+- Run The Arduino GUI version 1.8.19 (or newer than May 2025).
 - Load the *.ino file
-- Set up the board to be "leonardo". -- need to verify this
+- Set up the board to be "Arduino Leonardo".
 - Plug in the board into USB
-- Download from the Arduino GUI.
+- "Upload" <img width="28" height="27" alt="image" src="https://github.com/user-attachments/assets/270d445c-2d22-4503-96b8-3c62cd0f49b2" />
+ from the Arduino GUI.
 - Programming does not clear the EEPROM, so any settings should remain unaffected.
 
 **How to program pic16f1778 on UsbJoy:**
