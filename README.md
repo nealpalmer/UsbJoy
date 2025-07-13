@@ -8,7 +8,6 @@ To add to this readme:
 - mechanical drawing of the board (wid, hei, hole locations)
 - design files for firmware, kicad, 3d, software
 - upload 3d design files to makerworld (add links to it here)
-- write the software application for programming the pic
 - Create a bill of materials for all parts necessary, with ordering links (include arduino, 30mm led, cables, jst cable ends, 600ppm encoder)
 - Add mechanical parts to make the spinning rotary encoder (acrylic piece, 3d printed springs)
 - A description of how to get feedback from the robot to the leds.  Does this require a networktables application?  Or use Force-Feedback mechanisms?
