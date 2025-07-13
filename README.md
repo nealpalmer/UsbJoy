@@ -2,19 +2,21 @@
 USB Joystick Controller 12Digital/SmartButton, 4Analog, 1Rotary, 1NeoPixel
 
 This is a couple of circuit boards that make up a fancy USB joystick controller for FRC #2984.
-It has both a HID joystick interface and a HID uart interface presented to the computer (i.e. it works in Windows and Linux).
+It has both a HID joystick interface and a HID uart interface (for configuration) presented to the computer (i.e. it works in Windows and Linux).  No embedded programming experience is necessary to get it to work!  It also looks like just a HID analog joystick to Windows.
 
-To add to this readme:
+To add to this readme+files:
 - mechanical drawing of the board (wid, hei, hole locations)
-- design files for firmware, kicad, 3d, software
 - upload 3d design files to makerworld (add links to it here)
 - Create a bill of materials for all parts necessary, with ordering links (include arduino, 30mm led, cables, jst cable ends, 600ppm encoder)
-- Add mechanical parts to make the spinning rotary encoder (acrylic piece, 3d printed springs)
+- Add mechanical parts to make the spinning rotary encoder (acrylic piece, 3d printed springs), and makerworld
 - A description of how to get feedback from the robot to the leds.  Does this require a networktables application?  Or use Force-Feedback mechanisms?
+- A labeled visual description of what all the connectors are for.
 
 ![image](https://github.com/user-attachments/assets/ea97f88b-f23c-439b-81eb-e5cb5ec8e4a8)
 ![image](https://github.com/user-attachments/assets/5b4c13d2-de07-41db-afa2-7e9a51e008a0)
 ![image](https://github.com/user-attachments/assets/e703f007-66c7-4fff-99f2-dc9885223b1f)
+<img width="397" height="770" alt="image" src="https://github.com/user-attachments/assets/d25ffc2e-d5bf-4f97-ad72-5a2e8fb099a8" />
+
 
 **Features:**
 - 12 Digital inputs for buttons (3-pin White/Yellow/Green JST XH: 5V, signal with 10k pullup, GND)
