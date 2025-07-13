@@ -6,9 +6,8 @@ It has both a HID joystick interface and a HID uart interface (for configuration
 
 To add to this readme+files:
 - mechanical drawing of the board (wid, hei, hole locations)
-- upload 3d design files to makerworld (add links to it here)
 - Create a bill of materials for all parts necessary, with ordering links (include arduino, 30mm led, cables, jst cable ends, 600ppm encoder)
-- Add mechanical parts to make the spinning rotary encoder (acrylic piece, 3d printed springs), and makerworld
+- Add mechanical parts to make the spinning rotary encoder (acrylic piece), and makerworld
 - A description of how to get feedback from the robot to the leds.  Does this require a networktables application?  Or use Force-Feedback mechanisms?
 - A labeled visual description of what all the connectors are for.
 
@@ -107,7 +106,8 @@ To add to this readme+files:
 - [oshpark.com](https://oshpark.com/) has wonderful pricing for qty3 of 2and4 layer boards and ships in 10 calendar days for almost everything (and you can pay more to get it earlier, or pay for faster shipping)
   - [UsbJoy_R2](https://oshpark.com/shared_projects/QPZCB1ZT) board order $20/3 boards
   - [SmartButton_R2](https://oshpark.com/shared_projects/OV1uAkH7) board order $1.70/3 boards ($6.80/12 boards)
-- A 3d-printer can make the UsbJoy board attach directly to the screw threads of one of the buttons.  A couple of sample mount's source files are here.
+- A 3d-printer can make the UsbJoy board attach directly to the screw threads of one of the buttons.  A couple of sample mount's source files are [here](https://makerworld.com/en/models/1602536-usbjoy-controller-mount-30mm-arcade-button).
+- An 3d printed [encoder spring](https://makerworld.com/en/models/1602721-rotary-encoder-rotary-friction-spring) makes the encoder much better for not spinning the robot wildly.
 - Testing for button functionality can be done in windows with the built-in "USB game controllers"->properties window to see the buttons that get pressed. NEED A PICTURE HERE!
 - You can extract a 3d model of the boards from kicad to use in your 3d cad system.  Kicad: File->Export->STEP
 - digikey has all of the electrical components necessary (except for the LED and Arduino board).
