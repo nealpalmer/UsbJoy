@@ -1,0 +1,59 @@
+Description,ref des,$/each,total Qty,Qty/UsbJoy,Qty/SmartButton,Qty other,Purchasing link
+Oshpark UsbJoy 3x UsbJoy PCB,,$7.00,1,1,,,https://oshpark.com/shared_projects/QPZCB1ZT
+Digikey kit of 3x UsbJoy parts,,,1,1,,,
+Oshpark SmartButton 3x SmartButton PCB,,$0.50,1,,1,,https://oshpark.com/shared_projects/OV1uAkH7
+Digikey kit of 12x SmartButton parts,,,1,,1,,
+30mm illuminated arcade buttons (5x),,$2.00,1,,1,,https://www.amazon.com/dp/B01N11BDX9
+,,,,,,,
+600ppm encoder,,$16.99,1,,,1,https://www.amazon.com/dp/B01MZ4V1XP
+encoder finger wheel,,laser cut,1,,,1,https://makerworld.com/en/models/1605249-encoder-finger-wheel
+UsbJoy mount to SmartButton,,printed plastic,1,,,1,https://makerworld.com/en/models/1602536-usbjoy-controller-mount-30mm-arcade-button
+encoder springs,,printed plastic,1,,,1,https://makerworld.com/en/models/1602721-rotary-encoder-rotary-friction-spring
+analog joystick,,$17.89,1,,,1,https://www.amazon.com/dp/B08CGYGMJL
+linear potentiometer,,$2.00,2,,,2,https://www.amazon.com/dp/B07HNY7VWC
+,,,,,,,
+JST XH 3-pin connector end,,,32,,,32,
+JST XH crimp pins,,,96,,,96,
+XH wires with 5-pin connectors (need to replace with 3-pin) (20 pieces),,$0.44,1,,,1,https://www.amazon.com/dp/B0B2RCW5JF
+magnifying glasses,,$23.99,0,,,,https://www.amazon.com/Dilzekui-Magnifier-Rechargeable-Magnifying-Optivisor/dp/B0C7LNGKLP
+neopixel string,,$14.99,1,,,1,https://www.amazon.com/dp/B09PBHJG6G
+neopixel ring,,$25.99,1,,,1,https://www.amazon.com/dp/B083VWVP3J?ref_=ppx_hzsearch_conn_dt_b_fed_asin_title_2&th=1
+,,,,,,,
+B3B-XH-A (white JST XH 3-pin),"J1, J2, J3, J4, J5, J6, J11",,7,7,,,
+B3B-XH-A (green JST XH 3-pin),"J7, J8, J9, J10",,4,4,,,
+B3B-XH-A (blue JST XH 3-pin),"J13, J14, J15, J16",,4,4,,,
+B3B-XH-A (yellow JST XH 3-pin),J12,,1,1,,,
+B4B-XH-A (white JST XH 4-pin),J17,,1,1,,,
+Pro Micro Arduino with USB-C,U1,,1,1,,,
+"CD74HC243M96 (SOIC 14, 5V, buffer)",U3,,1,1,,,
+"pic16f1778 (SOIC 28, 5V)",U2,,1,1,,,
+Green LED 0603,D1,,1,1,,,
+100k 0603 5% resistor,"R25, R26, R27, R28, R21, R22, R23, R24",,8,8,,,
+10k 0603 5% resistor,"R7, R1, R2, R19, R18, R17, R16, R15, R14, R13, R12, R9, R10, R11, R20",,15,15,,,
+2k 0603 5% resistor,R8,,1,1,,,
+DRTR5V0U2SR-7 (esd diode),"CR1, CR2, CR3, CR4, CR5, CR6, CR7, CR8",,8,8,,,
+10uF 6.3V 1210 ceramic capacitor,"C3, C4",,2,2,,,
+0.1uF 6.3V 0603 ceramic capacitor,"C1, C2",,2,2,,,
+450-1140-ND (momentary push button),SW1,,1,1,,,
+100ohm 0603 5% resistor,"R3, R4, R5, R6",,4,4,,,
+,,,0,,,,
+,,,0,,,,
+B3B-XH-A (white JST XH 3-pin),J2,,1,,1,,
+0.01uF 0603 6.3V ceramic capacitor,C1,,1,,1,,
+10k 0603 5% resistor,"R1, R2",,2,,2,,
+"pic16f15213-I/SN (soic8, 5V)",U1,,1,,1,,
+DRTR5V0U2SR-7 (esd diode),CR1,,1,,1,,
+,,,0,,,,
+,,,0,,,,
+,,,0,,,,
+,,,0,,,,
+,,,0,,,,
+,,,0,,,,
+,,,0,,,,
+,,,0,,,,
+,,,0,,,,
+,,,0,,,,
+,,,0,,,,
+,,,0,,,,
+,,,0,,,,
+,,,0,,,,
