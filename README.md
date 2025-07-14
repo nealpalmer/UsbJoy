@@ -56,8 +56,8 @@ To add to this readme+files:
 - pre-crimped 3-pin cables are available on [aliexpress.com](https://www.aliexpress.us/item/3256807213104605.html)  Just be aware that the pins have to be removed, and swapped so that it is a 1:1 cable instead of a 1:3 cable (or you are going to connect GND to 5V, and destroy your SmartButtons).
 - pre-crimped 10-pin cables are available on [amazon.com](https://www.amazon.com/dp/B0B2RCW5JF) And you would have to replace the connectors with a 3-pin version (cheap, and comes from US, so comes quickly).
 
-**UsbJoy Conntector description**
-![image](https://github.com/user-attachments/assets/ea97f88b-f23c-439b-81eb-e5cb5ec8e4a8)
+**UsbJoy Connector description**
+- ![image](https://github.com/user-attachments/assets/ea97f88b-f23c-439b-81eb-e5cb5ec8e4a8)
 - J1-J12 are the button inputs.  Pin 1: 5V (square pad), Pin 2: 'signal' (short to GND during button press), Pin 3: GND.
 - J7-J10 (Green connectors) can have their 5V pin switched on/off if you want to use an LED directly connected instead of a SmartButton.  They have a 100ohm series resistor for the 5V output to limit it to about 25mA (plenty for a SmartButton).
 - J12 can be setup to drive a neopixel string (a programmable strip of RGB leds).  Be aware that the max current for the string should be about 400mA, any higher and the 500mA USB fuse on the Pro Micro is likely to blow.  So for very long strings, external power should be provided for the array.
@@ -133,10 +133,10 @@ To add to this readme+files:
 - Solder all of the SMT components before any thru-hole components.  Required for both boards, because some of the thru-hole soldering will make SMT parts unreachable.
 
 **How to program Arduino Pro Micro's Atmega32U4 (the USB device):**
-- Run The Arduino GUI version 1.8.19 (or newer than May 2025).
+- Run the [Arduino GUI](https://www.arduino.cc/en/software/) version 1.8.19 (or newer than May 2025).
 - Load the *.ino file
 - Set up the board to be "Arduino Leonardo".
-- Plug in the board into USB
+- Plug in the board into USB, then select the right Com port in the Arduino GUI.
 - "Upload" <img width="28" height="27" alt="image" src="https://github.com/user-attachments/assets/270d445c-2d22-4503-96b8-3c62cd0f49b2" />
  from the Arduino GUI.
 - Programming does not clear the EEPROM, so any settings should remain unaffected.
@@ -145,7 +145,7 @@ To add to this readme+files:
 - Disconnect the last 2 buttons (Yellow and white next to each other)
 - type "q1" on the uart to disable the 7,10,11 button communications
 - type "n0" to disable the neopixel functionality
-- Run the Microchip IDE (what version minimum?)
+- Run the [Microchip IDE](https://www.microchip.com/en-us/tools-resources/develop/mplab-x-ide)
 - Load the project
 - Compile the project for production
 - Using PICKIT5: Use one of the current programmers pickit5 is probably preferred, and plug it into the 5-pin holes on the bottom side of the board.  And have the IDE program the device.
@@ -162,7 +162,7 @@ To add to this readme+files:
 - You can now reconnect the disconnected buttons.
 
 **How to program pic16f15213 on SmartButton using PICKIT5:**
-- Run the Microchip IDE (what version minimum?)
+- Run the [Microchip IDE](https://www.microchip.com/en-us/tools-resources/develop/mplab-x-ide)
 - Load the project
 - Compile the project for production
 - Make sure the SmartButton isn't pressed, Connect the 3-pin cable to the UsbJoy (for 5V power), plug the pickit5 into the 5-pin holes on the SmartButton board.  And have the IDE program the device.
