@@ -32,13 +32,13 @@ To add to this readme+files:
   - Can give you feedback as to if you are holding the playing piece.
 - 4-pin JST XH rotary encoder for Z-axis (600 ppr*4phase = 2400/rev resolution assumed)
   - We use the rotary encoder to control the angle that the robot is pointing on the field.  Turn the rotary knob by 5degrees, and the robot also turns by 5degrees...
-- 4 extra 'virtual' buttons, 1 toggling, 3 as constants
-  - 3 virtual constant buttons make it possible to distinguish between multiple controllers easily.
-  - Multiple UsbJoy boards can be distinguished from each other from the FRC Robot software (just use those buttons).  This means we don't have to re-arrange the joystick order in driver station.
+- 4or5 extra 'virtual' buttons, 1 toggling (optional), 4 as constants
+  - 4 virtual constant buttons make it possible to distinguish between multiple controllers easily.
+  - Multiple UsbJoy boards can be distinguished from each other from the FRC Robot software (just use those constant buttons).  This means we don't have to re-arrange the joystick order in driver station.
 - Arduino Pro Micro USB-C 5V ATmega32U4 controller board used for ease of soldering.
   - Make sure to get one with the fuse on the TOP side of the board (i.e. no bottom side components).  [amazon.com](https://www.amazon.com/gp/product/B0B6HYLC44)
 - SmartButton support for all 12 Digital inputs
-  - You can choose what each button's LED looks like for infomational purposes.
+  - You can choose what each button's LED looks like for informational purposes.
   - Flickering the button when initially pressed is simple feedback that the button should be working (commuincation to UsbJoy, LED works, button works, cable connected appropriately).
   - Having the button light up when it should be useable is useful (i.e. the playing piece is being held, you can now press the shoot button).
   - Have a couple of buttons light up to indicate the state of the robot.
@@ -46,10 +46,11 @@ To add to this readme+files:
   - This sounded like a great idea initially, but I don't see a use for it now...
 - ESD diodes on all 16 3-pin connectors
 - Configuration of SmartButton settings done through the USB-UART interface.
-  - Some settings are saved in EEPROM (Neopixel config, ...) , some are temporary (LED values).
+  - Some settings are saved in EEPROM (Neopixel length, LED starting value, joystick invert axis, ...) , some are temporary (LED current values, neopixel pattern).
   - The settings are stored in the UsbJoy's EEPROM, and are configured for that particular port.  The settings aren't saved in the SmartButton itself.
   - You could compile different firmware for each button, and fix each button's LED functionality that way.
-- Coming soon: Programming of PIC micro-controller done over USB-UART with button press required.
+- Programming of PIC micro-controller done over USB-UART with MCLRn button press required (don't have anything plugged into J8, J11, J12).
+- Programming of SmartButton PIC micro-controller over USB-UART (use a custom cable from J8+J11+J12 to SmartButton 5-pin header).
 - Colored JST-XH 3-pin connectors are available on [aliexpress.com](https://www.aliexpress.us/item/3256806937445015.html)
 - Colored JST-XH terminal 3-pin connectors are available on [aliexpress.com](https://www.aliexpress.us/item/3256804014172692.html)
 - pre-crimped 3-pin cables are available on [aliexpress.com](https://www.aliexpress.us/item/3256807213104605.html)  Just be aware that the pins have to be removed, and swapped so that it is a 1:1 cable instead of a 1:3 cable (or you are going to connect GND to 5V, and destroy your SmartButtons).
