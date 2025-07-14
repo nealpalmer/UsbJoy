@@ -8,8 +8,9 @@ To add to this readme+files:
 - mechanical drawing of the board (wid, hei, hole locations)
 - test programming smartbutton with software application
 - update code when I'm done fiddling with stuff
+- Add PDF of the 2 schematics.
 - Add pictures where appropriate (pickit programming, USB programming cable)
-- Add description of how to create SmartButton programming cable.
+- Add pictures of a SmartButton programming cable.
 - A description of how to get feedback from the robot to the leds.  Does this require a networktables application?  Or use Force-Feedback mechanisms?
 
 ![image](https://github.com/user-attachments/assets/ea97f88b-f23c-439b-81eb-e5cb5ec8e4a8)
@@ -169,6 +170,12 @@ To add to this readme+files:
 **How to program pic16f15213 on SmartButton using UsbJoy's USB interface:**
 - Connect 3+3+3pin cable ends into UsbJoy (match yellow 11,white 10,green 7 connectors), connect 5-pin cable end into SmartButton.
 - Run "program_pic smartbutton.hex COM[#]".
+- You will need to create a cable to connect J8,J11,J12 to a 5-pin header.  It is probably easiest and more reliable to make an 3+3+3-pin to 5-pin XH only cable, and then solder the B5B-XH header to a 0.1" header.
+ - pin1: MCLRn -> Green/J8.2
+ - pin2: 5V -> White/J11.1
+ - pin3: GND -> Yellow/J12.3
+ - pin4: PGD -> Yellow/J12.2
+ - pin5: PGC -> White/J11.2
 
 **How to initially configure UsbJoy:**
 - Connect USB to a PC.
