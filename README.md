@@ -7,9 +7,7 @@ It has both a HID joystick interface and a HID uart interface (for configuration
 To add to this readme+files:
 - mechanical drawing of the board (wid, hei, hole locations)
 - Create a bill of materials for all parts necessary, with ordering links (include arduino, 30mm led, cables, jst cable ends, 600ppm encoder)
-- Add mechanical parts to make the spinning rotary encoder (acrylic piece), and makerworld
 - A description of how to get feedback from the robot to the leds.  Does this require a networktables application?  Or use Force-Feedback mechanisms?
-- A labeled visual description of what all the connectors are for.
 
 ![image](https://github.com/user-attachments/assets/ea97f88b-f23c-439b-81eb-e5cb5ec8e4a8)
 ![image](https://github.com/user-attachments/assets/5b4c13d2-de07-41db-afa2-7e9a51e008a0)
@@ -53,6 +51,17 @@ To add to this readme+files:
 - Colored JST-XH terminal 3-pin connectors are available on [aliexpress.com](https://www.aliexpress.us/item/3256804014172692.html)
 - pre-crimped 3-pin cables are available on [aliexpress.com](https://www.aliexpress.us/item/3256807213104605.html)  Just be aware that the pins have to be removed, and swapped so that it is a 1:1 cable instead of a 1:3 cable (or you are going to connect GND to 5V, and destroy your SmartButtons).
 - pre-crimped 10-pin cables are available on [amazon.com](https://www.amazon.com/dp/B0B2RCW5JF) And you would have to replace the connectors with a 3-pin version (cheap, and comes from US, so comes quickly).
+
+**UsbJoy Conntector description**
+![image](https://github.com/user-attachments/assets/ea97f88b-f23c-439b-81eb-e5cb5ec8e4a8)
+- J1-J12 are the button inputs.  Pin 1: 5V (square pad), Pin 2: 'signal' (short to GND during button press), Pin 3: GND.
+- J7-J10 (Green connectors) can have their 5V pin switched on/off if you want to use an LED directly connected instead of a SmartButton.  They have a 100ohm series resistor for the 5V output to limit it to about 25mA (plenty for a SmartButton).
+- J12 can be setup to drive a neopixel string (a programmable strip of RGB leds).  Be aware that the max current for the string should be about 400mA, any higher and the 500mA USB fuse on the Pro Micro is likely to blow.  So for very long strings, external power should be provided for the array.
+- J13-J16 are the analog inputs.  Pin 1: 5V, Pin 2: analog signal, Pin 3: GND.
+- J17 is the encoder input.  Pin 1: 5V (square pad), Pin 2,3: A&B encoder inputs, Pin 4: GND.  Any AB encoder can be used.  The firmware is setup to make a reasonable output for a 600 pulse/revolution=2400 change/revolution encoder (i.e. Z-axis has a range of 0-2399).  You can change the 2400 limit to any other number in the code for both the Arduino and PIC to make a different resolution encoder look right.
+- J8, J11, J12 are used for PIC programming (both the UsbJoy and SmartButton PIC).
+- Button between J17 and J5 is the PIC MCLRn button that connects J8.signal to MCLRn so that it is possible to program the PIC.
+- J18 (5-pin holes on back side) is the PIC ICSP header.  Connect the PICKIT5 here.  You must disconnect PICKIT5 for normal operation.
 
 **Rotary Encoder**
 - Uses a simple 4-pin {5V,A,B,GND} [encoder](https://www.amazon.com/dp/B01MZ4V1XP)
@@ -108,6 +117,7 @@ To add to this readme+files:
   - [SmartButton_R2](https://oshpark.com/shared_projects/OV1uAkH7) board order $1.70/3 boards ($6.80/12 boards)
 - A 3d-printer can make the UsbJoy board attach directly to the screw threads of one of the buttons.  A couple of sample mount's source files are [here](https://makerworld.com/en/models/1602536-usbjoy-controller-mount-30mm-arcade-button).
 - An 3d printed [encoder spring](https://makerworld.com/en/models/1602721-rotary-encoder-rotary-friction-spring) makes the encoder much better for not spinning the robot wildly.
+- An [acrylic wheel](https://makerworld.com/en/models/1605249-encoder-finger-wheel) with finger holes for the encoder is very useful.
 - Testing for button functionality can be done in windows with the built-in "USB game controllers"->properties window to see the buttons that get pressed. NEED A PICTURE HERE!
 - You can extract a 3d model of the boards from kicad to use in your 3d cad system.  Kicad: File->Export->STEP
 - digikey has all of the electrical components necessary (except for the LED and Arduino board).
