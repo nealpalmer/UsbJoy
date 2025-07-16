@@ -18,7 +18,7 @@ To add to this readme+files:
 <img width="397" height="770" alt="image" src="https://github.com/user-attachments/assets/d25ffc2e-d5bf-4f97-ad72-5a2e8fb099a8" />
 
 
-# **Features:**
+# Features:
 - 12 Digital inputs for buttons (3-pin White/Yellow/Green JST XH: 5V, signal with 10k pullup, GND)
   - 12 is probably enough buttons for a FRC operator panel.  We use 2x of these on the operator panel, and 1 on the driver panel.
   - simple buttons and switches can be used, just connect to the 'signal' and 'GND' pins of the 3-pin connector, and ignore the '5V' pin.
@@ -56,7 +56,7 @@ To add to this readme+files:
 - pre-crimped 3-pin cables are available on [aliexpress.com](https://www.aliexpress.us/item/3256807213104605.html)  Just be aware that the pins have to be removed, and swapped so that it is a 1:1 cable instead of a 1:3 cable (or you are going to connect GND to 5V, and destroy your SmartButtons).
 - pre-crimped 10-pin cables are available on [amazon.com](https://www.amazon.com/dp/B0B2RCW5JF) And you would have to replace the connectors with a 3-pin version (cheap, and comes from US, so comes quickly).
 
-**UsbJoy Connector description**
+# UsbJoy Connector description
 - ![image](https://github.com/user-attachments/assets/ea97f88b-f23c-439b-81eb-e5cb5ec8e4a8)
 - J1-J12 are the button inputs.  Pin 1: 5V (square pad), Pin 2: 'signal' (short to GND during button press), Pin 3: GND.
 - J7-J10 (Green connectors) can have their 5V pin switched on/off if you want to use an LED directly connected instead of a SmartButton.  They have a 100ohm series resistor for the 5V output to limit it to about 25mA (plenty for a SmartButton).
@@ -67,12 +67,12 @@ To add to this readme+files:
 - Button between J17 and J5 is the PIC MCLRn button that connects J8.signal to MCLRn so that it is possible to program the PIC.
 - J18 (5-pin holes on back side) is the PIC ICSP header.  Connect the PICKIT5 here.  You must disconnect PICKIT5 for normal operation.
 
-**Rotary Encoder**
+# Rotary Encoder
 - Uses a simple 4-pin {5V,A,B,GND} [encoder](https://www.amazon.com/dp/B01MZ4V1XP)
 - 600pulses/revolution * 4 edges per pulse = 2400 positions/revolution (about 1/6degree resolution)
 - Returns 0-2399 as the Z-axis to the Joystick HID interface.
 
-**SmartButton features**
+# SmartButton features
 - About $1 for circuit board+cpu+connector.  About $2 per illuminated arcade button.
 - Designed to solder directly to 30mm illuminated arcade buttons. [amazon EG-Starts Illuminated 30mm](https://www.amazon.com/EG-STARTS-Illuminated-Buttons-Raspberry/dp/B01N11BDX9) [Aliexpress 24mm&30mm](https://www.aliexpress.us/item/3256804217382377.html) [Coin/1P/2P](https://www.aliexpress.us/item/2251832825468632.html) [AutoRGB](https://www.aliexpress.us/item/3256805580977933.html) [50pack 28mm](https://www.aliexpress.us/item/3256805775007172.html) [Free ship $10](https://www.aliexpress.us/item/2251832849688596.html)
 - 24mm illuminated buttons might work, but haven't tested them yet.
@@ -93,7 +93,7 @@ To add to this readme+files:
   - 8: Button toggles state each time it is pressed: LED flashes when in 'pressed' state
   - 9: you can add more if you want...
 
-**NeoPixel**
+# NeoPixel
 - Uses an off-the-shelf neopixel array (WS2812B 5V leds) [Strip_of_leds](https://www.amazon.com/dp/B09PBHJG6G) [ring_of_leds](https://www.amazon.com/dp/B08GPWVD57)
 - Takes over Digital input #11 (the Yellow connector)
 - You are going to have to make a cable that has the JST XH connector on the end of it.
@@ -115,7 +115,7 @@ To add to this readme+files:
 - software/UsbJoy_pic_firmware/: firmware 
 - software/program_pic/: small application to program the pic16f1778 on UsbJoy, and pic15f15213 on SmartButton
 
-**Manufacturing suggestions:**
+# Manufacturing suggestions:
 - [oshpark.com](https://oshpark.com/) has wonderful pricing for qty3 of 2and4 layer boards and ships in 10 calendar days for almost everything (and you can pay more to get it earlier, or pay for faster shipping)
   - [UsbJoy_R2](https://oshpark.com/shared_projects/QPZCB1ZT) board order $20/3 boards
   - [SmartButton_R2](https://oshpark.com/shared_projects/OV1uAkH7) board order $1.70/3 boards ($6.80/12 boards)
@@ -132,7 +132,7 @@ To add to this readme+files:
 - Get some illuminated magnifying glasses for ease of soldering of small components. [amazon.com](https://www.amazon.com/YOCTOSUN-Magnifying-Rechargeable-1-5X-3-5X-Magnifier/dp/B0D8J3TYL3)
 - Solder all of the SMT components before any thru-hole components.  Required for both boards, because some of the thru-hole soldering will make SMT parts unreachable.
 
-**How to program Arduino Pro Micro's Atmega32U4 (the USB device):**
+# How to program Arduino Pro Micro's Atmega32U4 (the USB device):
 - Run the [Arduino GUI](https://www.arduino.cc/en/software/) version 1.8.19 (or newer than May 2025).
 - Load the *.ino file
 - Set up the board to be "Arduino Leonardo".
@@ -141,7 +141,7 @@ To add to this readme+files:
  from the Arduino GUI.
 - Programming does not clear the EEPROM, so any settings should remain unaffected.
 
-**How to program pic16f1778 on UsbJoy usint PICKIT5 programmer:**
+# How to program pic16f1778 on UsbJoy usint PICKIT5 programmer:
 - Disconnect the last 2 buttons (Yellow and white next to each other)
 - type "q1" on the uart to disable the 7,10,11 button communications
 - Run the [Microchip IDE](https://www.microchip.com/en-us/tools-resources/develop/mplab-x-ide)
@@ -149,7 +149,7 @@ To add to this readme+files:
 - Compile the project for production
 - Use one of the current PIC programmers (pickit5 is probably preferred), and plug it into the 5-pin holes on the bottom side of the board.  And have the IDE program the device.
 - type "q0" on the uart to re-enable the last 2 button functionality
-**How to program pic16f1778 on UsbJoy using UsbJoy's USB connection:**
+# How to program pic16f1778 on UsbJoy using UsbJoy's USB connection:
 - Disconnect buttons 7,10,11 (Green, White, Yellow) - they will interfere with the programming.
 - Connect UsbJoy to the Windows PC.
 - Figure out what com port (use Windows Device Manager) UsbJoy is using.
@@ -159,12 +159,12 @@ To add to this readme+files:
 - Release the button.
 - You can now reconnect the disconnected buttons.
 
-**How to program pic16f15213 on SmartButton using PICKIT5:**
+# How to program pic16f15213 on SmartButton using PICKIT5:
 - Run the [Microchip IDE](https://www.microchip.com/en-us/tools-resources/develop/mplab-x-ide)
 - Load the project
 - Compile the project for production
 - Make sure the SmartButton isn't pressed, Connect the 3-pin cable to the UsbJoy (for 5V power), plug the pickit5 into the 5-pin holes on the SmartButton board.  And have the IDE program the device.
-**How to program pic16f15213 on SmartButton using UsbJoy's USB interface:**
+# How to program pic16f15213 on SmartButton using UsbJoy's USB interface:
 - Connect 3+3+3pin cable ends into UsbJoy (match yellow 11,white 10,green 7 connectors), connect 5-pin cable end into SmartButton.
 - Run "program_pic sb smartbutton.hex COM[#]".
 - You will need to create a cable to connect J8,J11,J12 to a 5-pin header.  It is probably easiest and more reliable to make an 3+3+3-pin to 5-pin XH only cable, and then solder the B5B-XH header to a 0.1" header.
@@ -174,7 +174,7 @@ To add to this readme+files:
  - pin4: PGD -> Yellow/J12.2
  - pin5: PGC -> White/J11.2
 
-**How to initially configure UsbJoy:**
+# How to initially configure UsbJoy:
 - Connect USB to a PC.
 - Open a terminal program (I like [MobaXterm](https://mobaxterm.mobatek.net/)), and connect to the correct com port (use windows device manager, and find the 'leonardo' port listed) (linux: 'dmesg' to find the correct '/dev/ttyUSB#' when you plug into USB).
 - Any baud rate is fine, because it is a virtual serial port.
@@ -187,11 +187,11 @@ To add to this readme+files:
 - "v#" to set the power-on setting for the Green ports - probably want them always on "vF" unless they are being used in some interesting way.
 - "V#" to set the power-on DEFAULT for the Green ports (saved to EEPROM)
 
-**Future enhancements**
+# Future enhancements
 - Add a 5-pin direct programming header for connecting to SmartButton (no need for weird programming cable).
 - Move QR code to top side of board.
 
-**History of major changes**
+# History of major changes
 - 7/16/2025: SmartButton pic programming working over USB
 - 7/16/2025: Added PDF of schematics.
 - 7/15/2025: Uploaded 3d and lasercut objects to makerworld.com
