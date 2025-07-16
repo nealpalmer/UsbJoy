@@ -18,7 +18,7 @@ To add to this readme+files:
 <img width="397" height="770" alt="image" src="https://github.com/user-attachments/assets/d25ffc2e-d5bf-4f97-ad72-5a2e8fb099a8" />
 
 
-**Features:**
+# **Features:**
 - 12 Digital inputs for buttons (3-pin White/Yellow/Green JST XH: 5V, signal with 10k pullup, GND)
   - 12 is probably enough buttons for a FRC operator panel.  We use 2x of these on the operator panel, and 1 on the driver panel.
   - simple buttons and switches can be used, just connect to the 'signal' and 'GND' pins of the 3-pin connector, and ignore the '5V' pin.
