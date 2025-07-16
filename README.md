@@ -6,7 +6,6 @@ It has both a HID joystick interface and a HID uart interface (for configuration
 
 To add to this readme+files:
 - mechanical drawing of the board (wid, hei, hole locations)
-- test programming smartbutton with software application
 - update code when I'm done fiddling with stuff
 - Add PDF of the 2 schematics.
 - Add pictures where appropriate (pickit programming, USB programming cable)
@@ -145,18 +144,16 @@ To add to this readme+files:
 **How to program pic16f1778 on UsbJoy usint PICKIT5 programmer:**
 - Disconnect the last 2 buttons (Yellow and white next to each other)
 - type "q1" on the uart to disable the 7,10,11 button communications
-- type "n0" to disable the neopixel functionality
 - Run the [Microchip IDE](https://www.microchip.com/en-us/tools-resources/develop/mplab-x-ide)
 - Load the project
 - Compile the project for production
-- Using PICKIT5: Use one of the current programmers pickit5 is probably preferred, and plug it into the 5-pin holes on the bottom side of the board.  And have the IDE program the device.
+- Use one of the current PIC programmers (pickit5 is probably preferred), and plug it into the 5-pin holes on the bottom side of the board.  And have the IDE program the device.
 - type "q0" on the uart to re-enable the last 2 button functionality
-- type "n10" to re-enable neopixel 0x10 led functionality (or change the number to your string length)
 **How to program pic16f1778 on UsbJoy using UsbJoy's USB connection:**
 - Disconnect buttons 7,10,11 (Green, White, Yellow) - they will interfere with the programming.
 - Connect UsbJoy to the Windows PC.
 - Figure out what com port (use Windows Device Manager) UsbJoy is using.
-- Run "program_pic.exe [filename].hex COM[#]"
+- Run "program_pic.exe usbjoy [filename].hex COM[#]"
 - Press and hold the button next to the rotary connector for the full programming time (about 15 seconds).  If you forget this step, then you will receive a message "Error: couldn't find expected PIC CPU".
 - Wait for programming to complete.
 - Release the button.
@@ -169,7 +166,7 @@ To add to this readme+files:
 - Make sure the SmartButton isn't pressed, Connect the 3-pin cable to the UsbJoy (for 5V power), plug the pickit5 into the 5-pin holes on the SmartButton board.  And have the IDE program the device.
 **How to program pic16f15213 on SmartButton using UsbJoy's USB interface:**
 - Connect 3+3+3pin cable ends into UsbJoy (match yellow 11,white 10,green 7 connectors), connect 5-pin cable end into SmartButton.
-- Run "program_pic smartbutton.hex COM[#]".
+- Run "program_pic sb smartbutton.hex COM[#]".
 - You will need to create a cable to connect J8,J11,J12 to a 5-pin header.  It is probably easiest and more reliable to make an 3+3+3-pin to 5-pin XH only cable, and then solder the B5B-XH header to a 0.1" header.
  - pin1: MCLRn -> Green/J8.2
  - pin2: 5V -> White/J11.1
