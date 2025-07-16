@@ -7,7 +7,6 @@ It has both a HID joystick interface and a HID uart interface (for configuration
 To add to this readme+files:
 - mechanical drawing of the board (wid, hei, hole locations)
 - update code when I'm done fiddling with stuff
-- Add PDF of the 2 schematics.
 - Add pictures where appropriate (pickit programming, USB programming cable)
 - Add pictures of a SmartButton programming cable.
 - A description of how to get feedback from the robot to the leds.  Does this require a networktables application?  Or use Force-Feedback mechanisms?
