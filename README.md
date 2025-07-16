@@ -105,7 +105,7 @@ To add to this readme+files:
   - Rainbow
   - Moving Rainbow
 
-**Files included:**
+# Files included:
 - UsbJoy_d12_a4_r-rev2/: Kicad layout files, and gerbers
 - SmartButton-rev2/: Kicad layout files, and gerbers
 - UsbJoy_bill_of_materials.csv: spreadsheets with all of the parts to purchase and quantities and ordering links, pcb, buttons, cables, other stuff...
@@ -141,7 +141,7 @@ To add to this readme+files:
  from the Arduino GUI.
 - Programming does not clear the EEPROM, so any settings should remain unaffected.
 
-# How to program pic16f1778 on UsbJoy usint PICKIT5 programmer:
+# How to program pic16f1778 on UsbJoy using PICKIT5 programmer:
 - Disconnect the last 2 buttons (Yellow and white next to each other)
 - type "q1" on the uart to disable the 7,10,11 button communications
 - Run the [Microchip IDE](https://www.microchip.com/en-us/tools-resources/develop/mplab-x-ide)
@@ -181,11 +181,11 @@ To add to this readme+files:
 - 'h'+enter to get the help menu
 - All settings commands are "letter+hex_number+enter".
 - Important EEPROM settings to run:
-- 'u#" to set the upper 3-bits for the virtual buttons to uniquely identify this particular board (saved to EEPROM)
-- "m#val" to set the SmartLed DEFAULT setting for that port (not for the SmartLed itself) to the desired LED pattern (and toggle functionality) (saved to EEPROM)
-- "n#" to set the number of neopixel leds in the string - set to "n0" to indicate that there isn't a neopixel string.
-- "v#" to set the power-on setting for the Green ports - probably want them always on "vF" unless they are being used in some interesting way.
-- "V#" to set the power-on DEFAULT for the Green ports (saved to EEPROM)
+  - 'u#" to set the upper 3-bits for the virtual buttons to uniquely identify this particular board (saved to EEPROM)
+  - "m#val" to set the SmartLed DEFAULT setting for that port (not for the SmartLed itself) to the desired LED pattern (and toggle functionality) (saved to EEPROM)
+  - "n#" to set the number of neopixel leds in the string - set to "n0" to indicate that there isn't a neopixel string.
+  - "v#" to set the power-on setting for the Green ports - probably want them always on "vF" unless they are being used in some interesting way.
+  - "V#" to set the power-on DEFAULT for the Green ports (saved to EEPROM)
 
 # Future enhancements
 - Add a 5-pin direct programming header for connecting to SmartButton (no need for weird programming cable).
