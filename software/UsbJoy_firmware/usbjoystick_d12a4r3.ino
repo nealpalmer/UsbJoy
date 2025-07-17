@@ -16,7 +16,8 @@
 uint8_t prog_pic = 0;  // stop driving upper 2 button outputs
 
 #define BUTTON_COUNT 12
-#define IDBUTTON_COUNT 5
+#define IDBUTTON_COUNT 4
+#define TOGGLING_BUTTON_COUNT 1 // can be set to 1 or 0
 #define ENCODER_LIMIT (600*4)
 #define SAMPLES 25 // how many samples to grab to determine value(duration) of bit - 25 seems to work really well
 
@@ -61,7 +62,7 @@ uint8_t voltage_enables;
 
 Joystick_ joystick(
 	JOYSTICK_DEFAULT_REPORT_ID, JOYSTICK_TYPE_JOYSTICK,
-	BUTTON_COUNT + IDBUTTON_COUNT, 0, 
+	BUTTON_COUNT + IDBUTTON_COUNT + TOGGLING_BUTTON_COUNT, 0, 
 	true, true, true, // X and Y and Z axis
 	true, true, false, // Rx and Ry axis, no Rz axis
 	false, false, // no rudder nor throttle
@@ -205,7 +206,8 @@ void loop() {
     digitalWrite(LED_BUILTIN_myRX, (millis()>>8)&1);
 
 		// toggle one of the virtual buttons so that you can see it is updating in any joystick gui
-    joystick.setButton(BUTTON_COUNT + IDBUTTON_COUNT-1, ((millis()>>8)&1) ^ 1); // make the upper joystick input toggle
+	if (TOGGLING_BUTTON_COUNT>0)
+    	joystick.setButton(BUTTON_COUNT + IDBUTTON_COUNT, ((millis()>>8)&1) ^ 1); // make the upper joystick input toggle
 
 	if ((millis()%1000)==0 /*|| (neopixel_repeat_timer > millis()+10000)*/) {
 		Serial1.write('n');
@@ -247,7 +249,7 @@ void loop() {
 
 				// skip the neopixel button
 			if ((btn==BUTTON_COUNT-1) && (ee.neopixel_count>0)) {
-    			joystick.setButton(BUTTON_COUNT + IDBUTTON_COUNT-1, ((millis()>>6)&1) ^ 1); // make the neopixel joystick input toggle very fast
+    			joystick.setButton(BUTTON_COUNT-1, ((millis()>>6)&1) ^ 1); // make the neopixel joystick input toggle very fast to make it clear that a button won't work
 				pinMode(buttons[btn],INPUT_PULLUP);
 				continue; // don't drive the LAST button if neopixels are implemented
 			}
@@ -463,24 +465,22 @@ if (debug)
 							pinMode(PGD,INPUT_PULLUP);
 							break;
 						case 1:
-							pinMode(MCLR,OUTPUT);
-   							digitalWrite(MCLR, 0);
 							pinMode(PGC,OUTPUT);
    							digitalWrite(PGC, 0);
-
-							//pinMode(MCLR,INPUT_PULLUP);
-							//pinMode(PGC,INPUT_PULLUP);
-							//pinMode(PGD,INPUT_PULLUP);
+							pinMode(MCLR,OUTPUT);
+   							digitalWrite(MCLR, 0);
 							break;
 					}
 					break;
-				case 'r': {
+				case 'r': { // LSB first
+						// "r#", #=hex number of bits to read back (1 to 16)
+						// response: "r#" hex value read
 					uint16_t val=0;
-					// "r#", #=number of bits to read back
 					Serial.print("r");
 					pinMode(PGC,OUTPUT);
    					digitalWrite(PGC, 0);
 					pinMode(PGD,INPUT_PULLUP);
+						// shift in the bits LSB first
 					for (int index=0;index<uart_value;index++) {
     					digitalWrite(PGC, 1);
     					digitalWrite(PGC, 0);
@@ -489,12 +489,43 @@ if (debug)
 					Serial.println(val,HEX);
 					break;
 				}
-				case 'w':
-					// "w#val16", #=number of bits to transfer
+				case 'R': { // MSB first
+						// "r#", #=hex number of bits to read back (1 to 16)
+						// response: "r#" hex value read
+					uint16_t val=0;
+					Serial.print("r");
+					pinMode(PGC,OUTPUT);
+   					digitalWrite(PGC, 0);
+					pinMode(PGD,INPUT_PULLUP);
+						// shift in the bits LSB first
+					for (int index=uart_value-1;index>=0;index--) {
+    					digitalWrite(PGC, 1);
+    					digitalWrite(PGC, 0);
+						val |= ((digitalRead(PGD)&1) << index);
+					}
+					Serial.println(val,HEX);
+					break;
+				}
+				case 'w': // send LSB first
+						// "w#val16", #=hex number of bits to transfer (1 to 16), val16=16-bit hex number to write
 					pinMode(PGC,OUTPUT);
 					pinMode(PGD,OUTPUT);
    					digitalWrite(PGC, 0);
+						// shift out the bits LSB first
 					for (int index=0;index<(uart_value32>>16);index++) {
+						digitalWrite(PGD,(uart_value32>>index)&1);
+    					digitalWrite(PGC, 1);
+    					digitalWrite(PGC, 0);
+					}
+					pinMode(PGD,INPUT_PULLUP);
+					break;
+				case 'W': // send MSB first
+						// "w#val16", #=hex number of bits to transfer (1 to 16), val16=16-bit hex number to write
+					pinMode(PGC,OUTPUT);
+					pinMode(PGD,OUTPUT);
+   					digitalWrite(PGC, 0);
+						// shift out the bits MSB first
+					for (int index=(uart_value32>>16)-1;index>=0;index--) {
 						digitalWrite(PGD,(uart_value32>>index)&1);
     					digitalWrite(PGC, 1);
     					digitalWrite(PGC, 0);
@@ -515,6 +546,9 @@ if (debug)
 					Serial.println("'p##'=Set neopixels pattern");
 					Serial.println("'s'=detect and save smartbutton response len EEPROM (use if a smartbutton has button issues)");
 					Serial.println("'g'=Debug Data");
+					//Serial.println("'q'=PIC program assert MCLRn (J8)");
+					//Serial.println("'w'=PIC program write Data");
+					//Serial.println("'r'=PIC program read Data");
 			}
 			uart_value = 0;
 			uart_value32 = 0;

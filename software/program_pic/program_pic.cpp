@@ -5,36 +5,45 @@
 #include <iostream>
 
 void send_bits(uint32_t val, int bitcount);
+void send_bits_msb(uint32_t val, int bitcount);
 void sendcommand6_read14(uint8_t val,uint16_t &data);
+void sendcommand8_read24(uint8_t val,uint16_t &data);
 void sendcommand6_14(uint8_t val,uint16_t data);
+void sendcommand8_24(uint8_t val,uint16_t data);
 void sendcommand6(uint32_t val);
+void sendcommand8(uint32_t val);
 void recvbits(uint16_t &data, int bitcount);
+void recvbits_msb(uint16_t &data, int bitcount);
 void parse_hex_file(FILE *fh);
+void program_1778(void);
+void program_15213(void);
 
  HANDLE hComm;
  uint8_t code_mem[65536];
  uint8_t config_mem[65536];
 
+ DWORD bytes_xferred;
+ char buff[1024];
 
 int main(int argc, char *argv[])
 {
  FILE *fh_hex;
 
- if (argc!=3) {
-		 printf("USAGE: %s filename.hex com#\n",argv[0]);
+ if (argc!=4) {
+		 printf("USAGE: %s [usbjoy/sb] filename.hex com#\n",argv[0]);
 		 exit(-1);
  }
 
  	// open hex file
- fh_hex = fopen(argv[1],"r");
+ fh_hex = fopen(argv[2],"r");
  if (fh_hex==NULL) {
-		 printf("Couldn't open '%s' for reading\n",argv[1]);
+		 printf("Couldn't open '%s' for reading\n",argv[2]);
 		 exit(-1);
  }
  parse_hex_file(fh_hex);
 
  	// open com port
- LPCSTR szPortName = argv[2]; // Replace with your desired COM port, e.g., "COM2", "COM10"
+ LPCSTR szPortName = argv[3]; // Replace with your desired COM port, e.g., "COM2", "COM10"
 
  hComm = CreateFile(
 	szPortName,                 // Port name (e.g., "COM1", "\\\\.\\COM10" for COM ports above 9)
@@ -85,8 +94,6 @@ int main(int argc, char *argv[])
     }
 
  	// send a command that should generate a response
- DWORD bytes_xferred;
- char buff[1024];
 
  do {
  	WriteFile(hComm, "z\n", 2,&bytes_xferred, NULL);
@@ -111,6 +118,29 @@ int main(int argc, char *argv[])
  WriteFile(hComm, "q1\n", 3,&bytes_xferred, NULL);
  Sleep(1000);
 
+ if (strncmp(argv[1],"usbjoy",6)==0)
+ 	program_1778();
+ else if (strncmp(argv[1],"sb",3)==0)
+ 	program_15213();
+ else
+	printf("ERROR: Didn't select either 'usbjoy' or 'sb' for command line parameter '%s'\n",argv[1]);
+
+ 	// ******************************
+	// EXIT the hardware programming mode.
+ 	// ******************************
+ printf("EXIT programming mode\n");
+ WriteFile(hComm, "q0\n", 3,&bytes_xferred, NULL);
+ 
+ if (0)
+ for (int j=0;j<10;j++) {
+ 	ReadFile(hComm, buff, 1, &bytes_xferred,NULL);
+ 	for (int i=0;i<bytes_xferred;i++)
+		 printf("%c", buff[i]);
+ }
+}
+
+void program_1778()
+{
  	// ******************************
 	// Initialize low voltage programming.
 	// Send: 0100 1101 0100 0011 0100 1000 0101 0000 (b2 c2 12 0a) "MCHP"
@@ -156,7 +186,8 @@ int main(int argc, char *argv[])
 		if (data==0x308f) {
 			printf("Found pic16f1778\n");
 		} else {
-			printf("Error: couldn't find expected PIC CPU\n");
+			printf("Error: couldn't find expected PIC CPU pic16f1778 (0x308f)\n");
+ 			WriteFile(hComm, "q0\n", 3,&bytes_xferred, NULL);
 			exit(-1);
 		}
 	}
@@ -226,19 +257,135 @@ if (1) {
 	sendcommand6(CMD_INCREMENT_ADDR);
  }
 }
+}
+
+void program_15213()
+{
+ 	// ******************************
+	// Initialize low voltage programming.
+	// Send: 0100 1101 0100 0011 0100 1000 0101 0000 (b2 c2 12 0a) "MCHP"
+ 	// ******************************
+ printf("Initialize low voltage programming mode\n");
+ for (int i=0;i<1;i++) {
+	if (1) {
+ 		send_bits_msb('M', 8);
+ 		send_bits_msb('C', 8);
+ 		send_bits_msb('H', 8);
+ 		send_bits_msb('P', 8);
+	}
+ }
+ //send_bits_msb(0,1); // don't know why this is necessary, but it works better this way...
+
+ Sleep(100);
+
+#define CMD8_LOAD_ADDR 0x80
+#define CMD8_BULK_ERASE 0x18
+//#define CMD8_ROW_ERASE 0xF0
+#define CMD8_LOAD_DATA_NVM 0x00
+#define CMD8_LOAD_DATA_NVM_INC 0x02
+#define CMD8_READ_DATA_NVM 0xfc
+#define CMD8_READ_DATA_NVM_INC 0xfe
+#define CMD8_INCREMENT_ADDR 0xf8
+#define CMD8_BEGIN_INT_TIMED_PROG 0xe0
+//#define CMD8_BEGIN_EXT_TIMED_PROG 0xc0
+//#define CMD8_END_EXT_TIMED_PROG 0x82
+	
+#if 1
+ 	// ******************************
+	// Check the ID of the CPU to make sure it is the right one.
+ 	// ******************************
+ printf("Read configuration words\n");
+ sendcommand8_24(CMD8_LOAD_ADDR,0x008000);
+ uint16_t data;
+ for (int i=0;i<16;i++) {
+ 	//sendcommand8_24(CMD8_LOAD_ADDR,0x008000+i);
+ 	sendcommand8_read24(CMD8_READ_DATA_NVM_INC,data);
+	printf("config[%d] = 0x%x\n",i,data);
+	if (i==6) {
+		if (data==0x30e3) {
+			printf("Found pic16f15213\n");
+		} else {
+			printf("Error: couldn't find expected PIC CPU pic16f17213 (0x303e)\n");
+ 			WriteFile(hComm, "q0\n", 3,&bytes_xferred, NULL);
+			exit(-1);
+		}
+	}
+ }
+#endif
 
  	// ******************************
-	// EXIT the hardware programming mode.
+	// Erase the PIC
  	// ******************************
- printf("EXIT programming mode\n");
- WriteFile(hComm, "q0\n", 3,&bytes_xferred, NULL);
- 
- if (0)
- for (int j=0;j<10;j++) {
- 	ReadFile(hComm, buff, 1, &bytes_xferred,NULL);
- 	for (int i=0;i<bytes_xferred;i++)
-		 printf("%c", buff[i]);
+if (1) {
+ printf("Erasing code+config bits\n");
+ if (1) {
+ 	sendcommand8_24(CMD8_LOAD_ADDR, 0x0000); // erase code+config memory
+ 	sendcommand8(CMD8_BULK_ERASE); // erase code+config memory
+ } else {
+		 // the PIC documentation is wrong!  This command doesn't work.
+ 	sendcommand8_24(CMD8_BULK_ERASE, 0x0000); // erase code+config memory
  }
+ Sleep(13); // 13ms wait for bulk erase
+}
+
+ 	// ******************************
+	// Program configuration bits (must be done before code programming, or first 32 words won't program)
+ 	// ******************************
+if (1) {
+ printf("Programming PIC's configuration bits\n");fflush(stdout);
+ sendcommand8_24(CMD8_LOAD_ADDR,0x8000); // move to configuration memory.
+
+ for (int i=0;i<0x20;i+=2) {
+	if ((config_mem[i]!=0xff) || (config_mem[i+1]!=0xff)) {
+		printf("prog config[%d] = 0x%2.2x%2.2x\n",i/2,config_mem[i+1],config_mem[i]);
+		sendcommand8_24(CMD8_LOAD_DATA_NVM,(((uint16_t)config_mem[i])) | (((uint16_t)config_mem[i+1])<<8));
+			// program the loaded word
+		sendcommand8(CMD8_BEGIN_INT_TIMED_PROG);
+		Sleep(5); // sleep for 5ms to let the programming operation finish
+	}
+	sendcommand8(CMD8_INCREMENT_ADDR);
+ }
+ printf("DONE: programming configuration words\n");
+}
+
+ 	// ******************************
+	// Program hex code memory into PIC
+ 	// ******************************
+if (1) {
+#define CODE_BYTES 0xD00 // 3.5kbytes
+ printf("Programming PIC's code memory\n");fflush(stdout);
+ sendcommand8_24(CMD8_LOAD_ADDR,0x0000);
+ bool need_prog = false;
+ for (int i=0;i<CODE_BYTES;i+=2) {
+	if ((code_mem[i]!=0xff) || (code_mem[i+1]!=0xff)) {
+		sendcommand8_24(CMD8_LOAD_DATA_NVM,(((uint16_t)code_mem[i])) | (((uint16_t)code_mem[i+1])<<8));
+		need_prog = true;
+	}
+		// row size is 32 words (64 bytes)
+	if (need_prog && ((i&63)==62)) {
+		sendcommand8(CMD8_BEGIN_INT_TIMED_PROG);
+		Sleep(3); // sleep for 2.5ms to let the programming operation finish
+		need_prog = false;
+	}
+	sendcommand8(CMD8_INCREMENT_ADDR);
+ }
+}	
+
+ 	// ******************************
+	// Verify hex program from PIC16f15213
+ 	// ******************************
+if (1) {
+ printf("Verify PIC's code memory\n");fflush(stdout);
+ sendcommand8_24(CMD8_LOAD_ADDR,0x0000);
+ Sleep(1); // wait >10us
+ for (int i=0;i<16;i++) {
+	uint16_t data;
+ 	sendcommand8_read24(CMD8_READ_DATA_NVM_INC,data);
+	printf("code[0x%x] = 0x%4.4x\n",i,data);
+	//sendcommand8(CMD8_INCREMENT_ADDR);
+ }
+}
+
 }
 
 void sendcommand6_read14(uint8_t val,uint16_t &data)
@@ -259,6 +406,18 @@ void sendcommand6_read14(uint8_t val,uint16_t &data)
  //printf("read14 = 0x%x\n",data);
 }
 
+void sendcommand8_read24(uint8_t val,uint16_t &data)
+{
+ uint16_t tmp;
+ send_bits_msb(val,8);
+
+ recvbits_msb(data,8); // data ignored
+ recvbits_msb(data,16);
+ data = (data>> 1)&0x3fff;
+
+ //printf("read14 = 0x%x\n",data);
+}
+
 void sendcommand6_14(uint8_t val,uint16_t data)
 {
  send_bits(val,6);
@@ -268,9 +427,35 @@ void sendcommand6_14(uint8_t val,uint16_t data)
  //send_bits(0,1);
 }
 
+void sendcommand8_24(uint8_t val,uint16_t data)
+{
+ //printf("cmd8_24(0x%x, 0x%x)\n",val,data);
+ send_bits_msb(val,8);
+
+ send_bits_msb(data>>15,8);
+ //send_bits(0,1);
+ send_bits_msb((data&0xffff)<<1,16);
+ //send_bits(0,1);
+}
+
 void sendcommand6(uint32_t val)
 {
  send_bits(val,6);
+}
+
+void sendcommand8(uint32_t val)
+{
+ //printf("cmd8_24(0x%x)\n",val);
+ send_bits_msb(val,8);
+}
+
+void send_bits_msb(uint32_t val, int bitcount)
+{
+ char str[1024];
+ DWORD bytes_xferred;
+ sprintf(str,"W%x%4.4x\n",bitcount,val&0xffff);
+ //printf("sent: %s",str);
+ WriteFile(hComm, str, strlen(str),&bytes_xferred, NULL);
 }
 
 void send_bits(uint32_t val, int bitcount)
@@ -280,6 +465,34 @@ void send_bits(uint32_t val, int bitcount)
  sprintf(str,"w%x%4.4x\n",bitcount,val&0xffff);
  //printf("sent: %s",str);
  WriteFile(hComm, str, strlen(str),&bytes_xferred, NULL);
+}
+
+void recvbits_msb(uint16_t &data, int bitcount)
+{
+ char str[1024];
+ char buff[1024];
+ int index=0;
+ DWORD bytes_xferred;
+
+ sprintf(str,"R%x\n",bitcount);
+ //printf("sent: %s",str);
+ WriteFile(hComm, str, strlen(str),&bytes_xferred, NULL);
+
+ index=0;
+ int attempts=0;
+ do {
+	buff[index]=0;
+	buff[index+1]=0;
+ 	ReadFile(hComm, buff+index, 1, &bytes_xferred,NULL);
+	//if (bytes_xferred!=0)
+		//printf("%c",buff[index]);
+	index+=bytes_xferred;
+	attempts++;
+ } while ((buff[index-1]!='\n') && (attempts<1000));
+
+ int val;
+ sscanf(buff+1,"%x",&val);
+ data = val;
 }
 
 void recvbits(uint16_t &data, int bitcount)
