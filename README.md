@@ -7,7 +7,6 @@ It has both a HID joystick interface and a HID uart interface (for configuration
 To add to this readme+files:
 - mechanical drawing of the board (wid, hei, hole locations)
 - update code when I'm done fiddling with stuff
-- Add smartbutton.hex and usbjoy.hex files so that the IDE doesn't have to be installed (no such luck for Arduino).
 - Add pictures where appropriate (pickit programming, USB programming cable)
 - Add pictures of a SmartButton programming cable.
 - A description of how to get feedback from the robot to the leds.  Does this require a networktables application?  Or use Force-Feedback mechanisms?
@@ -192,6 +191,7 @@ To add to this readme+files:
 - Move QR code to top side of board.
 
 # History of major changes
+- 7/16/2025: Added MPLAB project files.
 - 7/16/2025: SmartButton pic programming working over USB
 - 7/16/2025: Added PDF of schematics.
 - 7/15/2025: Uploaded 3d and lasercut objects to makerworld.com
