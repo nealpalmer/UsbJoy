@@ -7,7 +7,6 @@ It has both a HID joystick interface and a HID uart interface (for configuration
 To add to this readme+files:
 - mechanical drawing of the board (wid, hei, hole locations)
 - update code when I'm done fiddling with stuff
-- Add smartbutton.hex and usbjoy.hex files so that the IDE doesn't have to be installed (no such luck for Arduino).
 - Add pictures where appropriate (pickit programming, USB programming cable)
 - Add pictures of a SmartButton programming cable.
 - A description of how to get feedback from the robot to the leds.  Does this require a networktables application?  Or use Force-Feedback mechanisms?
@@ -168,11 +167,15 @@ To add to this readme+files:
 - Connect 3+3+3pin cable ends into UsbJoy (match yellow 11,white 10,green 7 connectors), connect 5-pin cable end into SmartButton.
 - Run "program_pic sb smartbutton.hex COM[#]".
 - You will need to create a cable to connect J8,J11,J12 to a 5-pin header.  It is probably easiest and more reliable to make an 3+3+3-pin to 5-pin XH only cable, and then solder the B5B-XH header to a 0.1" header.
- - pin1: MCLRn -> Green/J8.2
- - pin2: 5V -> White/J11.1
- - pin3: GND -> Yellow/J12.3
- - pin4: PGD -> Yellow/J12.2
- - pin5: PGC -> White/J11.2
+ - pin1: MCLRn -> Red/Green/J8.2
+ - pin2: 5V -> White/White/J11.1
+ - pin3: GND -> Blue/Yellow/J12.3
+ - pin4: PGD -> Blue/Yellow/J12.2
+ - pin5: PGC -> White/White/J11.2
+ - <img width="676" height="497" alt="image" src="https://github.com/user-attachments/assets/cd0be9e9-08c2-4cd5-b7af-086c0df9257c" />
+ - <img width="385" height="551" alt="image" src="https://github.com/user-attachments/assets/d54e4672-3bee-4afb-915b-5ecb00b70a6f" />
+
+
 
 # How to initially configure UsbJoy:
 - Connect USB to a PC.
@@ -192,6 +195,7 @@ To add to this readme+files:
 - Move QR code to top side of board.
 
 # History of major changes
+- 7/16/2025: Added MPLAB project files.
 - 7/16/2025: SmartButton pic programming working over USB
 - 7/16/2025: Added PDF of schematics.
 - 7/15/2025: Uploaded 3d and lasercut objects to makerworld.com
