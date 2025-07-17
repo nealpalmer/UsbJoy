@@ -172,6 +172,10 @@ To add to this readme+files:
  - pin3: GND -> Yellow/J12.3
  - pin4: PGD -> Yellow/J12.2
  - pin5: PGC -> White/J11.2
+ - <img width="676" height="497" alt="image" src="https://github.com/user-attachments/assets/cd0be9e9-08c2-4cd5-b7af-086c0df9257c" />
+ - <img width="385" height="551" alt="image" src="https://github.com/user-attachments/assets/d54e4672-3bee-4afb-915b-5ecb00b70a6f" />
+
+
 
 # How to initially configure UsbJoy:
 - Connect USB to a PC.
