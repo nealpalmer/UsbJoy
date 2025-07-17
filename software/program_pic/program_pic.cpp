@@ -28,6 +28,7 @@ void program_15213(void);
 int main(int argc, char *argv[])
 {
  FILE *fh_hex;
+ printf("%s compiled '" __DATE__ "'\n",argv[0]);
 
  if (argc!=4) {
 		 printf("USAGE: %s [usbjoy/sb] filename.hex com#\n",argv[0]);
