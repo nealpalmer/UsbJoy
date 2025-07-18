@@ -8,7 +8,6 @@ To add to this readme+files:
 - mechanical drawing of the board (wid, hei, hole locations)
 - update code when I'm done fiddling with stuff
 - Add pictures where appropriate (pickit programming, USB programming cable)
-- Add pictures of a SmartButton programming cable.
 - A description of how to get feedback from the robot to the leds.  Does this require a networktables application?  Or use Force-Feedback mechanisms?
 
 ![image](https://github.com/user-attachments/assets/ea97f88b-f23c-439b-81eb-e5cb5ec8e4a8)
