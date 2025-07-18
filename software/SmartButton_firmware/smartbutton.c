@@ -314,8 +314,8 @@ INTCONbits.GIE = 1;
 		TMR0IF=0; // clear interrupt flag
 		ms_time++;
 		timeout_command++;
-		if (timeout_command > 1000) {
-			timeout_command = 1000;
+		if (timeout_command > 4000) {
+			timeout_command = 4000;
 			response_mode = 0;
 		}
 	}

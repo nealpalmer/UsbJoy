@@ -1,8 +1,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <windows.h>
-#include <iostream>
 
 void send_bits(uint32_t val, int bitcount);
 void send_bits_msb(uint32_t val, int bitcount);
@@ -28,10 +28,13 @@ void program_15213(void);
 int main(int argc, char *argv[])
 {
  FILE *fh_hex;
+ //printf("hello world\n"); exit(0);
  printf("%s compiled '" __DATE__ "'\n",argv[0]);
+ fflush(stdout);
 
  if (argc!=4) {
 		 printf("USAGE: %s [usbjoy/sb] filename.hex com#\n",argv[0]);
+		 fflush(stdout);
 		 exit(-1);
  }
 
@@ -58,7 +61,8 @@ int main(int argc, char *argv[])
 
  if (hComm == INVALID_HANDLE_VALUE) {
 	// Handle error, e.g., port not found or in use
-	std::cerr << "Error opening COM port: " << GetLastError() << std::endl;
+	printf("Error opening %s\n",argv[3]);
+	//std::cerr << "Error opening COM port: " << GetLastError() << std::endl;
 	return 1; // Or handle appropriately
  }
 
@@ -66,7 +70,8 @@ int main(int argc, char *argv[])
  DCB dcbSerialParams = {0};
     dcbSerialParams.DCBlength = sizeof(dcbSerialParams);
     if (!GetCommState(hComm, &dcbSerialParams)) {
-        std::cerr << "Error getting comm state." << std::endl;
+        //std::cerr << "Error getting comm state." << std::endl;
+		printf("Error getting comm state\n");
         CloseHandle(hComm);
         return 1;
     }
@@ -75,7 +80,8 @@ int main(int argc, char *argv[])
     dcbSerialParams.StopBits = ONESTOPBIT;
     dcbSerialParams.Parity = NOPARITY;
     if (!SetCommState(hComm, &dcbSerialParams)) {
-        std::cerr << "Error setting comm state." << std::endl;
+		printf("Error setting comm state\n");
+        //std::cerr << "Error setting comm state." << std::endl;
         CloseHandle(hComm);
         return 1;
     }
@@ -89,7 +95,8 @@ int main(int argc, char *argv[])
     timeouts.WriteTotalTimeoutConstant = 50;
     timeouts.WriteTotalTimeoutMultiplier = 10;
     if (!SetCommTimeouts(hComm, &timeouts)) {
-        std::cerr << "Error setting timeouts." << std::endl;
+		printf("Error setting timeouts\n");
+        //std::cerr << "Error setting timeouts." << std::endl;
         CloseHandle(hComm);
         return 1;
     }
