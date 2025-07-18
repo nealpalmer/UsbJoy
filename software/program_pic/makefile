@@ -1,6 +1,6 @@
 all:	program_pic
-	echo program_pic pic.hex COM7
-	./program_pic usbjoy ../usbjoystick_pic/usbjoystick_pic.X/dist/default/production/usbjoystick_pic.X.production.hex COM7
+	#./program_pic usbjoy usbjoy.hex COM7
+	./program_pic usbjoy ../UsbJoy_pic_firmware/usbjoystick_pic.X/dist/default/production/usbjoystick_pic.X.production.hex COM7
 
 sb:	program_pic
 	./program_pic sb smartbutton.hex COM7
