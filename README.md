@@ -72,8 +72,8 @@ To add to this readme+files:
 
 # SmartButton features
 - About $1 for circuit board+cpu+connector.  About $2 per illuminated arcade button.
-- Designed to solder directly to 30mm illuminated arcade buttons. [amazon EG-Starts Illuminated 30mm](https://www.amazon.com/EG-STARTS-Illuminated-Buttons-Raspberry/dp/B01N11BDX9) [Aliexpress 24mm&30mm](https://www.aliexpress.us/item/3256804217382377.html) [Coin/1P/2P](https://www.aliexpress.us/item/2251832825468632.html) [AutoRGB](https://www.aliexpress.us/item/3256805580977933.html) [50pack 28mm](https://www.aliexpress.us/item/3256805775007172.html) [Free ship $10](https://www.aliexpress.us/item/2251832849688596.html)
-- 24mm illuminated buttons might work, but haven't tested them yet.
+- Designed to solder directly to 30mm illuminated arcade buttons. [amazon EG-Starts Illuminated 30mm](https://www.amazon.com/EG-STARTS-Illuminated-Buttons-Raspberry/dp/B01N11BDX9) [Aliexpress 30mm](https://www.aliexpress.us/item/3256804217382377.html) [Coin/1P/2P](https://www.aliexpress.us/item/2251832825468632.html) [AutoRGB](https://www.aliexpress.us/item/3256805580977933.html) [50pack 28mm](https://www.aliexpress.us/item/3256805775007172.html) [Free ship $10](https://www.aliexpress.us/item/2251832849688596.html)
+- NOTE: 24mm illuminated buttons don't work, the pins are too close together and the button binds when the board is connected (unless you pre-bend the pins).  And they are only 1mm smaller diameter for the nut, so no reason to use them.
 - Other buttons could be used.  Just solder the to switch pins to the button, and the LED pins to an LED+Resistor.
 - 3-pin interface (5V, signal, GND)
 - Some solder jumpers can be filled, and some jumpers cut to turn a smart button into a dumb button (i.e. no 5V present).
