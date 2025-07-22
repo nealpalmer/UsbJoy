@@ -127,7 +127,7 @@ To add to this readme+files:
 - 12x SmartButton parts kit
 - The arduino pro micro has a 0.5A fuse on it.  The bottom side of the board will NOT be accessible.  If that 0.5A fuse is on the bottom side, and you have over current, then your boards will not be salvageable.  So get a version that has all the components on the top side.
 - The discrete components are 0603 packages for easier soldering.
-- Get some illuminated magnifying glasses for ease of soldering of small components. [amazon.com](https://www.amazon.com/YOCTOSUN-Magnifying-Rechargeable-1-5X-3-5X-Magnifier/dp/B0D8J3TYL3)
+- Get some [illuminated magnifying glasses](https://www.amazon.com/YOCTOSUN-Magnifying-Rechargeable-1-5X-3-5X-Magnifier/dp/B0D8J3TYL3) for ease of soldering of small components. 
 - Solder all of the SMT components before any thru-hole components.  Required for both boards, because some of the thru-hole soldering will make SMT parts unreachable.
 
 # How to program Arduino Pro Micro's Atmega32U4 (the USB device):
