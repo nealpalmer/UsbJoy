@@ -163,8 +163,10 @@ To add to this readme+files:
 - Compile the project for production
 - Make sure the SmartButton isn't pressed, Connect the 3-pin cable to the UsbJoy (for 5V power), plug the pickit5 into the 5-pin holes on the SmartButton board.  And have the IDE program the device.
 # How to program pic16f15213 on SmartButton using UsbJoy's USB interface:
-- Connect 3+3+3pin cable ends into UsbJoy (match yellow 11,white 10,green 7 connectors), connect 5-pin cable end into SmartButton.
+- Connect 3+3+3pin cable ends into UsbJoy (match yellow J12,white J11,green J8 connectors), connect 5-pin cable end into SmartButton.
 - Run "program_pic sb smartbutton.hex COM[#]".
+- Quick Test: While plugged into the 5-pin cable, you should see the led in the button flicker VERY VERY dim.
+- Quick Test: While plugged into the 5-pin cable, if you press the button, the LED should light up.
 - You will need to create a cable to connect J8,J11,J12 to a 5-pin header.  It is probably easiest and more reliable to make an 3+3+3-pin to 5-pin XH only cable, and then solder the B5B-XH header to a 0.1" header.
  - pin1: MCLRn -> Red/Green/J8.2
  - pin2: 5V -> White/White/J11.1
