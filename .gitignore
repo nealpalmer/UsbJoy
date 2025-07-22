@@ -6,7 +6,4 @@ software/SmartButton_firmware/smartbutton.X/defmplabxtrace.log.inx
 /software/UsbJoy_pic_firmware/usbjoystick_pic.X/build
 /software/UsbJoy_pic_firmware/usbjoystick_pic.X/dist
 *.swp
-*.un~
-*.cpp~
-software/program_pic/makefile~
-software/SmartButton_firmware/smartbutton.c~
+*~
