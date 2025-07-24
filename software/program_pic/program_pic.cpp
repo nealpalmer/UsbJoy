@@ -313,7 +313,7 @@ void program_15213()
 		if (data==0x30e3) {
 			printf("Found pic16f15213\n");
 		} else {
-			printf("Error: couldn't find expected PIC CPU pic16f17213 (0x303e)\n");
+			printf("Error: couldn't find expected PIC CPU pic16f15213 (0x303e)\n");
  			WriteFile(hComm, "q0\n", 3,&bytes_xferred, NULL);
 			exit(-1);
 		}
