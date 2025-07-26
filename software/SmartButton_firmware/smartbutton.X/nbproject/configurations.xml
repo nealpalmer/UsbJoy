@@ -150,6 +150,9 @@
       <PK5Tool>
         <property key="debugoptions.useswbreakpoints" value="true"/>
       </PK5Tool>
+      <Tool>
+        <property key="debugoptions.useswbreakpoints" value="true"/>
+      </Tool>
       <XC8-CO>
         <property key="coverage-enable" value=""/>
         <property key="stack-guidance" value="false"/>

@@ -32,7 +32,7 @@
 uint32_t command_word=0xffffffff;
 int8_t response_mode = 1;
 uint8_t led_mode;
-uint8_t toggle_button = 0;
+uint8_t toggle_button = 2;
 uint8_t toggle_mode = 0; // this is for toggling the response signal every single query (for figuring out the min vs max pulse widths per port)
 uint8_t toggle_mode_val = 0;
 
@@ -123,8 +123,9 @@ void __interrupt() isr() {
 #define LED_FLASHING 4 // {0.1s/0.1s} flashing
 #define LED_SIN 5 // always on with sin() brightness
 #define LED_FLASHING_PRESSED 6 // flashing when button is pressed
-#define LED_TOGGLE_LIT 7 // each press toggles the state of the button, LED on when simulating pressed.
+#define LED_TOGGLE_LIT_STARTON 7 // each press toggles the state of the button, LED on when simulating pressed.
 #define LED_TOGGLE_FLASHING 8 // each press toggles the state of the button, LED flashing when simulating pressed.
+#define LED_TOGGLE_LIT_STARTOFF 9 // each press toggles the state of the button, LED on when simulating pressed.
 
 #define PWM_ON 0x80 // 50% brightness
 #define PWM_OFF 0x00
@@ -150,6 +151,7 @@ int16_t timeout_command = 0;
 //OSCFRQ = 0; // 1Mhz 
 
 led_mode = LED_PULSE; // default to pulsing the led when the button gets pressed
+toggle_button = 2;
 
 // *******************************************
 // Setup pins
@@ -388,8 +390,12 @@ INTCONbits.GIE = 1;
 			}
 			virtual_button = button;
 			break;
-		case LED_TOGGLE_LIT:
+		case LED_TOGGLE_LIT_STARTON:
+		case LED_TOGGLE_LIT_STARTOFF:
 		case LED_TOGGLE_FLASHING:
+			if (toggle_button>1)
+				toggle_button = ((led_mode==LED_TOGGLE_LIT_STARTOFF) ? 1 : 0);
+
 			if (ms_time > 250) {
 				if ((last_button==1) && (button == 0)) {
 					toggle_button = (toggle_button==0 ? 1 : 0);
@@ -401,7 +407,7 @@ INTCONbits.GIE = 1;
 			}
 			if (toggle_button==1) 
 				PWM3DCH = PWM_OFF;
-			else if (led_mode==LED_TOGGLE_LIT)
+			else if ((led_mode==LED_TOGGLE_LIT_STARTON) || (led_mode==LED_TOGGLE_LIT_STARTOFF))
 				PWM3DCH = PWM_ON/2;
 			else
 				PWM3DCH = (ms_time < 250+100) ? PWM_ON/2 : PWM_OFF;
