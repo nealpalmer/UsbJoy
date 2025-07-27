@@ -199,6 +199,10 @@ void set_pin_inputpullup(char pinnum)
  }
 }
 
+#define MAX_SIMPLE_COUNT 10
+uint8_t simple_count[BUTTON_COUNT];
+
+
   // *******************************************
   // put your main code here, to run repeatedly:
   // *******************************************
@@ -255,13 +259,13 @@ void loop() {
 				continue; // don't drive the LAST button if neopixels are implemented
 			}
 
-
 				// *****************
 				// read simple buttons
 				// *****************
             if (0==digitalRead(buttons[btn])) {
             	joystick.setButton(btn, !digitalRead(buttons[btn]));
 				txled ^= (digitalRead(buttons[btn])==0 ? 1 : 0);
+				simple_count[btn] = MAX_SIMPLE_COUNT;
 				continue;
 			}
 
@@ -291,6 +295,14 @@ void loop() {
 					// long pulse means smart button was pressed
 				joystick.setButton(btn, (low_count >= ee.sb_mid[btn]) ? 1 : 0);
 				txled ^= ((low_count>=ee.sb_mid[btn]) ? 1 : 0);
+				simple_count[btn] = 0;
+			} else {
+					// if no smart response for a while, assume that it must be a simple button
+				if ((++simple_count[btn]) >= MAX_SIMPLE_COUNT) {
+					simple_count[btn] = MAX_SIMPLE_COUNT;
+            		joystick.setButton(btn, !digitalRead(buttons[btn]));
+					txled ^= (digitalRead(buttons[btn])==0 ? 1 : 0);
+				}
 			}
 
 				// always save the shortest and longest responses
