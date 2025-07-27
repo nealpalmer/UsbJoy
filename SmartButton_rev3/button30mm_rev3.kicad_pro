@@ -68,6 +68,22 @@
           ""
         ],
         [
+          "copper_edge_clearance|104270000|61440000|3ecee333-1396-4d35-8186-4cfa8317cb1d|4819e1c8-da4c-4b9c-ba5c-6cbb09f40794",
+          ""
+        ],
+        [
+          "copper_edge_clearance|104270000|62710000|3ecee333-1396-4d35-8186-4cfa8317cb1d|e80befb5-2c85-4d22-91f3-c553561ec924",
+          ""
+        ],
+        [
+          "copper_edge_clearance|104270000|63980000|3ecee333-1396-4d35-8186-4cfa8317cb1d|08e22a0d-a1a4-4d36-9208-28c4926107ce",
+          ""
+        ],
+        [
+          "copper_edge_clearance|104270000|65250000|3ecee333-1396-4d35-8186-4cfa8317cb1d|87a4ffb3-4b1e-4f58-90bc-aac4b3c96f8d",
+          ""
+        ],
+        [
           "copper_edge_clearance|92625000|67000000|3ecee333-1396-4d35-8186-4cfa8317cb1d|400482a1-530e-4fae-b577-6d87ad3ab566",
           ""
         ],
@@ -586,7 +602,7 @@
       "gencad": "",
       "idf": "",
       "netlist": "",
-      "plot": "button30mm_r2_gerber/",
+      "plot": "button30mm_r3_gerber/",
       "pos_files": "",
       "specctra_dsn": "",
       "step": "",
