@@ -7,3 +7,6 @@ software/SmartButton_firmware/smartbutton.X/defmplabxtrace.log.inx
 /software/UsbJoy_pic_firmware/usbjoystick_pic.X/dist
 *.swp
 *~
+/SmartButton_rev3/button30mm_rev3-backups
+*.lck
+SmartButton_rev3/fp-info-cache
