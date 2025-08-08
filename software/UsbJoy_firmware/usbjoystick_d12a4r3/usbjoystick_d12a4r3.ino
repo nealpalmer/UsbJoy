@@ -65,7 +65,7 @@ Joystick_ joystick(
 	JOYSTICK_DEFAULT_REPORT_ID, JOYSTICK_TYPE_JOYSTICK,
 	BUTTON_COUNT + IDBUTTON_COUNT + TOGGLING_BUTTON_COUNT, 0, 
 	true, true, true, // X and Y and Z axis
-	true, true, false, // Rx and Ry axis, no Rz axis
+	true, true, true, // Rx and Ry axis, Rz axis (for higher resolution encoder)
 	false, false, // no rudder nor throttle
 	false, false, false // no accel, brake, steering
 	);
@@ -90,6 +90,7 @@ void setup() {
   joystick.setZAxisRange(0,ENCODER_LIMIT-1); // rotary encoder
   joystick.setRxAxisRange(0,1023);
   joystick.setRyAxisRange(0,1023);
+  joystick.setRzAxisRange(0,199); // rotary encoder LSB values only (for FRC controller which has a range of -1.00 to 1.00 = 200 values total)
   DynamicHID().prepareOutput(data, sizeof(data));
 
   ee_read(); // fetch the parameters from the internal eeprom
@@ -379,6 +380,7 @@ if (debug)
 		if (ch=='\n') {
 			//Serial.println(encoder);
 			joystick.setZAxis(ee.inv[4] ? (ENCODER_LIMIT-1 - encoder) : encoder);
+			joystick.setRzAxis((ee.inv[4] ? (ENCODER_LIMIT-1 - encoder) : encoder)%200);
 			encoder = 0;
 		}
 		encoder %= ENCODER_LIMIT;
