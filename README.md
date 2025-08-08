@@ -197,6 +197,7 @@ To add to this readme+files:
 - Move QR code to top side of board.
 
 # History of major changes
+- 8/8/2025: Added RZ axis to have the full resolution of the 2400/rev encoder when used with FRC DriverStation that only has 200 values per axis.
 - 7/16/2025: Added MPLAB project files.
 - 7/16/2025: SmartButton pic programming working over USB
 - 7/16/2025: Added PDF of schematics.
