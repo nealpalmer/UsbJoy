@@ -29,6 +29,8 @@ struct {
 	uint8_t inv[5]; // invert the direction of the 4 analog inputs, and the encoder
 	uint8_t pwren;
 	uint8_t sb_mid[BUTTON_COUNT];
+	uint8_t linearize;
+	uint8_t is_dumb_button[BUTTON_COUNT];
 } ee;
 
 enum { // list of LED states for smart buttons
@@ -108,6 +110,8 @@ void setup() {
 			// the expected response lengths vary by pin (arduino library speeds)
 		ee.sb_mid[btn] = ((((0xe65 >> btn)&1)==0) ? 7 : 11);
 	}
+	if (ee.is_dumb_button[btn]>1)
+		ee.is_dumb_button[btn] = 0; // default all to smart buttons
   }
   for (uint8_t i=0;i<4;i++) {
 	pinMode(analogin[i],INPUT_PULLUP);
@@ -127,8 +131,11 @@ void setup() {
 
 		// set the static ID buttons (this should only have to happen upon startup, but it doesn't cost much here)
   for (uint8_t id_btn=0;id_btn<IDBUTTON_COUNT;id_btn++) {
-      joystick.setButton(id_btn+BUTTON_COUNT, (ee.id>>id_btn)&1);
+	joystick.setButton(id_btn+BUTTON_COUNT, (ee.id>>id_btn)&1);
   }
+
+  if (ee.linearize>0xf)
+	ee.linearize = 0;
 
   ee_update();
 }
@@ -203,17 +210,52 @@ void set_pin_inputpullup(char pinnum)
 #define MAX_SIMPLE_COUNT 10
 uint8_t simple_count[BUTTON_COUNT];
 
+uint32_t time_last_debug_print;
+
+
+uint16_t lin_adj[][2] = {
+	{0,0},
+	{14,0},
+	{27,85},
+	{51,171},
+	{87,256},
+	{204,341},
+	{385,426},
+	{551,512},
+	{716,597},
+	{876,682},
+	{972,767},
+	{998,853},
+	{1015,938},
+	{1023, 1023}
+};
+
+uint16_t linearize_pot(uint16_t pot,int8_t analognum)
+{
+ if (((ee.linearize>>analognum)&1)==0)
+	return pot;
+ for (int i=0;;i++) {
+	if ((lin_adj[i][0] <= pot) && (pot <= lin_adj[i+1][0])) {
+		int16_t range = lin_adj[i+1][0] - lin_adj[i][0];
+		int16_t dist = pot - lin_adj[i][0];
+		int16_t change = lin_adj[i+1][1]-lin_adj[i][1];
+		return( lin_adj[i][1] + ((float) change) * dist / range );
+	}
+ }
+ return(512);
+}
+
 
   // *******************************************
   // put your main code here, to run repeatedly:
   // *******************************************
 void loop() {
-    digitalWrite(LED_BUILTIN_myTX, txled); // mostly override other libraries's driving of the LED
-    digitalWrite(LED_BUILTIN_myRX, (millis()>>8)&1);
+	digitalWrite(LED_BUILTIN_myTX, txled); // mostly override other libraries's driving of the LED
+	digitalWrite(LED_BUILTIN_myRX, (millis()>>8)&1);
 
 		// toggle one of the virtual buttons so that you can see it is updating in any joystick gui
 	if (TOGGLING_BUTTON_COUNT>0)
-    	joystick.setButton(BUTTON_COUNT + IDBUTTON_COUNT, ((millis()>>8)&1) ^ 1); // make the upper joystick input toggle
+		joystick.setButton(BUTTON_COUNT + IDBUTTON_COUNT, ((millis()>>8)&1) ^ 1); // make the upper joystick input toggle
 
 	if ((millis()%1000)==0 /*|| (neopixel_repeat_timer > millis()+10000)*/) {
 		Serial1.write('n');
@@ -234,7 +276,7 @@ void loop() {
 /*
 	int bytes = DynamicHID().available();
 	if (bytes>0) {
-        	digitalWrite(LED_BUILTIN_myTX, DynamicHID().read());
+		digitalWrite(LED_BUILTIN_myTX, DynamicHID().read());
 		for (int i=1;i<bytes;i++)
 			DynamicHID().read();
 	}
@@ -243,7 +285,7 @@ void loop() {
 
 	txled = 1;
 	command_index=(command_index-1)&0x1f; // send next bit in the 32-bit command
-  	for (uint8_t btn=0;btn<BUTTON_COUNT;btn++) {
+	for (uint8_t btn=0;btn<BUTTON_COUNT;btn++) {
 			//continue;
 			//if ((btn==7) || (btn==10) || (btn==11))
 				//continue;
@@ -255,7 +297,7 @@ void loop() {
 
 				// skip the neopixel button
 			if ((btn==BUTTON_COUNT-1) && (ee.neopixel_count>0)) {
-    			joystick.setButton(BUTTON_COUNT-1, ((millis()>>6)&1) ^ 1); // make the neopixel joystick input toggle very fast to make it clear that a button won't work
+				joystick.setButton(BUTTON_COUNT-1, ((millis()>>6)&1) ^ 1); // make the neopixel joystick input toggle very fast to make it clear that a button won't work
 				pinMode(buttons[btn],INPUT_PULLUP);
 				continue; // don't drive the LAST button if neopixels are implemented
 			}
@@ -263,8 +305,8 @@ void loop() {
 				// *****************
 				// read simple buttons
 				// *****************
-            if (0==digitalRead(buttons[btn])) {
-            	joystick.setButton(btn, !digitalRead(buttons[btn]));
+			if ((0==digitalRead(buttons[btn])) || (ee.is_dumb_button[btn]==1)) {
+				joystick.setButton(btn, !digitalRead(buttons[btn]));
 				txled ^= (digitalRead(buttons[btn])==0 ? 1 : 0);
 				simple_count[btn] = MAX_SIMPLE_COUNT;
 				continue;
@@ -301,7 +343,7 @@ void loop() {
 					// if no smart response for a while, assume that it must be a simple button
 				if ((++simple_count[btn]) >= MAX_SIMPLE_COUNT) {
 					simple_count[btn] = MAX_SIMPLE_COUNT;
-            		joystick.setButton(btn, !digitalRead(buttons[btn]));
+					joystick.setButton(btn, !digitalRead(buttons[btn]));
 					txled ^= (digitalRead(buttons[btn])==0 ? 1 : 0);
 				}
 			}
@@ -313,6 +355,7 @@ void loop() {
 				responselen_max[btn] = low_count;
 
 if (debug)
+if (0)
 			if ((low_count>0) && (last_count!=low_count)) {
 				last_count = low_count;
 				Serial.print(btn);
@@ -329,7 +372,7 @@ if (debug)
 		// **************************
 	smartbutton_test--;
 	if (smartbutton_test==0) {
-  		for (uint8_t btn=0;btn<BUTTON_COUNT;btn++) {
+		for (uint8_t btn=0;btn<BUTTON_COUNT;btn++) {
 	Serial.print(led_state[btn]);
 	Serial.print(", ");
 			Serial.print(responselen_min[btn]);
@@ -351,10 +394,38 @@ if (debug)
 		smartbutton_test = 0;
 	}
 
-	joystick.setXAxis(ee.inv[0] ? 1023-analogRead(analogin[0]) : analogRead(analogin[0]));
-	joystick.setYAxis(ee.inv[1] ? 1023-analogRead(analogin[1]) : analogRead(analogin[1]));
-	joystick.setRxAxis(ee.inv[2] ? 1023-analogRead(analogin[2]) : analogRead(analogin[2]));
-	joystick.setRyAxis(ee.inv[3] ? 1023-analogRead(analogin[3]) : analogRead(analogin[3]));
+	joystick.setXAxis(linearize_pot(ee.inv[0] ? 1023-analogRead(analogin[0]) : analogRead(analogin[0]),0));
+	joystick.setYAxis(linearize_pot(ee.inv[1] ? 1023-analogRead(analogin[1]) : analogRead(analogin[1]),1));
+	joystick.setRxAxis(linearize_pot(ee.inv[2] ? 1023-analogRead(analogin[2]) : analogRead(analogin[2]),2));
+	joystick.setRyAxis(linearize_pot(ee.inv[3] ? 1023-analogRead(analogin[3]) : analogRead(analogin[3]),3));
+
+	if (1) {
+		if (debug) {
+			if ((time_last_debug_print+250 < millis()) || (time_last_debug_print > millis())) {
+				time_last_debug_print = millis();
+				
+				for (int k=0;k<4;k++) {
+					if ((ee.linearize&(1<<k))!=0) {
+						Serial.print("[");Serial.print(k);Serial.print("] 0x"); 
+						Serial.print(analogRead(analogin[k]), HEX);
+						Serial.print("-> 0x"); Serial.print(linearize_pot(analogRead(analogin[k]),k), HEX);
+						Serial.print(", ");
+					}
+				}
+				Serial.print("\n");
+			}
+		} else {
+			time_last_debug_print  = millis();
+		}
+	}
+
+	// 6.1mm 0x3ff
+	// 5.0mm 0x3e0
+	// 4.0mm 0x350
+	// 3.0mm 0x204
+	// 2.0mm 0x92
+	// 1.0mm 0x2e
+	// 0.0mm 0xe
 	
 		// *************************
 		// send an incrementing value to the PIC.
@@ -443,9 +514,9 @@ if (debug)
 				case 'u': // set iD of this USB device using buttons 12-15
 					ee.id = (uart_value&0xf);
 					ee_update(); // save the new value to the EEPROM
-  					for (uint8_t id_btn=0;id_btn<IDBUTTON_COUNT;id_btn++) {
-      					joystick.setButton(id_btn+BUTTON_COUNT, (ee.id>>id_btn)&1);
-  					}
+					for (uint8_t id_btn=0;id_btn<IDBUTTON_COUNT;id_btn++) {
+						joystick.setButton(id_btn+BUTTON_COUNT, (ee.id>>id_btn)&1);
+					}
 					break;
 				case 'V':
 					ee.pwren = (uart_value & 0xf);
@@ -458,7 +529,7 @@ if (debug)
 					break;
 				case 'g':
 					debug = !debug;
-  					for (uint8_t btn=0;btn<BUTTON_COUNT;btn++) {
+					for (uint8_t btn=0;btn<BUTTON_COUNT;btn++) {
 						Serial.print(btn);
 						Serial.print(":");
 						Serial.println(led_state[btn]);
@@ -481,9 +552,9 @@ if (debug)
 							break;
 						case 1:
 							pinMode(PGC,OUTPUT);
-   							digitalWrite(PGC, 0);
+							digitalWrite(PGC, 0);
 							pinMode(MCLR,OUTPUT);
-   							digitalWrite(MCLR, 0);
+							digitalWrite(MCLR, 0);
 							break;
 					}
 					break;
@@ -493,12 +564,12 @@ if (debug)
 					uint16_t val=0;
 					Serial.print("r");
 					pinMode(PGC,OUTPUT);
-   					digitalWrite(PGC, 0);
+					digitalWrite(PGC, 0);
 					pinMode(PGD,INPUT_PULLUP);
 						// shift in the bits LSB first
 					for (int index=0;index<uart_value;index++) {
-    					digitalWrite(PGC, 1);
-    					digitalWrite(PGC, 0);
+						digitalWrite(PGC, 1);
+						digitalWrite(PGC, 0);
 						val |= ((digitalRead(PGD)&1) << index);
 					}
 					Serial.println(val,HEX);
@@ -510,12 +581,12 @@ if (debug)
 					uint16_t val=0;
 					Serial.print("r");
 					pinMode(PGC,OUTPUT);
-   					digitalWrite(PGC, 0);
+					digitalWrite(PGC, 0);
 					pinMode(PGD,INPUT_PULLUP);
 						// shift in the bits LSB first
 					for (int index=uart_value-1;index>=0;index--) {
-    					digitalWrite(PGC, 1);
-    					digitalWrite(PGC, 0);
+						digitalWrite(PGC, 1);
+						digitalWrite(PGC, 0);
 						val |= ((digitalRead(PGD)&1) << index);
 					}
 					Serial.println(val,HEX);
@@ -525,12 +596,12 @@ if (debug)
 						// "w#val16", #=hex number of bits to transfer (1 to 16), val16=16-bit hex number to write
 					pinMode(PGC,OUTPUT);
 					pinMode(PGD,OUTPUT);
-   					digitalWrite(PGC, 0);
+					digitalWrite(PGC, 0);
 						// shift out the bits LSB first
 					for (int index=0;index<(uart_value32>>16);index++) {
 						digitalWrite(PGD,(uart_value32>>index)&1);
-    					digitalWrite(PGC, 1);
-    					digitalWrite(PGC, 0);
+						digitalWrite(PGC, 1);
+						digitalWrite(PGC, 0);
 					}
 					pinMode(PGD,INPUT_PULLUP);
 					break;
@@ -538,14 +609,29 @@ if (debug)
 						// "w#val16", #=hex number of bits to transfer (1 to 16), val16=16-bit hex number to write
 					pinMode(PGC,OUTPUT);
 					pinMode(PGD,OUTPUT);
-   					digitalWrite(PGC, 0);
+					digitalWrite(PGC, 0);
 						// shift out the bits MSB first
 					for (int index=(uart_value32>>16)-1;index>=0;index--) {
 						digitalWrite(PGD,(uart_value32>>index)&1);
-    					digitalWrite(PGC, 1);
-    					digitalWrite(PGC, 0);
+						digitalWrite(PGC, 1);
+						digitalWrite(PGC, 0);
 					}
 					pinMode(PGD,INPUT_PULLUP);
+					break;
+				case '-':
+					if (uart_value32<12)
+						ee.is_dumb_button[uart_value32] = 1;
+					ee_update(); // save the new value to the EEPROM
+					break;
+				case '+':
+					if (uart_value32<12)
+						ee.is_dumb_button[uart_value32] = 0;
+					ee_update(); // save the new value to the EEPROM
+					break;
+				case '/':
+					ee.linearize = (uart_value32&0xf);
+					ee_update(); // save the new value to the EEPROM
+					//Serial.println("updated linearize\n");
 					break;
 				case 'h':
 				default:
@@ -560,6 +646,9 @@ if (debug)
 					Serial.println("'n##'=Set num neopixels (0==standard button) EEPROM");
 					Serial.println("'p##'=Set neopixels pattern");
 					Serial.println("'s'=detect and save smartbutton response len EEPROM (use if a smartbutton has button issues)");
+					Serial.println("'/#'=linearize_pots - #=hex enables");
+					Serial.println("'-#'=is dumb button - #=button num EEPROM");
+					Serial.println("'+#'=is smart button - #=button num EEPROM");
 					Serial.println("'g'=Debug Data");
 					//Serial.println("'q'=PIC program assert MCLRn (J8)");
 					//Serial.println("'w'=PIC program write Data");
@@ -575,7 +664,7 @@ if (debug)
 
 
 	joystick.sendState();
-    digitalWrite(LED_BUILTIN_myTX, txled);
+	digitalWrite(LED_BUILTIN_myTX, txled);
 }
 
 void ee_read(void)
