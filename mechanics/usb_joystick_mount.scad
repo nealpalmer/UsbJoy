@@ -87,7 +87,7 @@ module mount_flat() {
 	}
 }
 
-module mount_vert() {
+module mount_vert(drill_dia) {
 	difference() {
 		union() {
 				// ring around button
@@ -115,7 +115,7 @@ module mount_vert() {
 				for (xy=usbjoy_holes) {
 					translate([button_nut_d/2+wall/2-0.01,xy[1],usbjoy_w/2+xy[0]])
 						rotate(a=90,v=[0,1,0])
-							cylinder(d1=m3_d+2*m3_wall+usbjoy_standoff_height,d2=m3_d+2*m3_wall,h=0*wall+usbjoy_standoff_height,$fn=60);
+							cylinder(d1=drill_dia+2*m3_wall+usbjoy_standoff_height,d2=drill_dia+2*m3_wall,h=0*wall+usbjoy_standoff_height,$fn=60);
 				}
 			}
 		}
@@ -132,16 +132,18 @@ module mount_vert() {
 		for (xy=usbjoy_holes) {
 			translate([button_nut_d/2,xy[1],usbjoy_w/2+xy[0]])
 				rotate(a=90,v=[0,1,0])
-					cylinder(d=3.5,h=wall+1.5+10,$fn=60,center=true);
+					cylinder(d=drill_dia,h=wall+1.5+10,$fn=60,center=true);
 		}
 	
 	}
 }
 
-if (1)
+if (0)
 translate([100,0,0])
 mount_flat();
 
+if (0)
+mount_vert(3.3);
 if (1)
-mount_vert();
+mount_vert(4.1); // for heat set nuts
 
