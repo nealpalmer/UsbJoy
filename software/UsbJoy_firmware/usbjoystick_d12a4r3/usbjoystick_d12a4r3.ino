@@ -31,6 +31,8 @@ struct {
 	uint8_t sb_mid[BUTTON_COUNT];
 	uint8_t linearize;
 	uint8_t is_dumb_button[BUTTON_COUNT];
+	uint16_t center[4]; // 512 is usually the center, if set to 0, then centering isn't used
+	uint16_t scale[4]; // 512 means 1:1 scaling
 } ee;
 
 enum { // list of LED states for smart buttons
@@ -245,6 +247,36 @@ uint16_t linearize_pot(uint16_t pot,int8_t analognum)
  return(512);
 }
 
+long readVcc() {
+  // Read 1.1V reference against AVcc
+  ADMUX = (_BV(REFS0) | _BV(MUX4) | _BV(MUX3) | _BV(MUX2) | _BV(MUX1));
+  
+  delay(2); // Wait for Vref to settle
+  ADCSRA |= _BV(ADSC); // Start conversion
+  while (bit_is_set(ADCSRA, ADSC)); // Measuring
+
+  uint8_t low  = ADCL; // must read ADCL first - it then locks ADCH
+  uint8_t high = ADCH;
+
+  long result = (high << 8) | low;
+
+  // Calculate Vcc (in mV); 1125300 = 1100 * 1023 (with optional fine-tuning multiplier)
+  result = 1125300L / result; 
+  return result; // Vcc in millivolts
+}
+
+uint16_t adjust_1v_4v_vcc(uint16_t adc,long vcc_mv,uint8_t index)
+{
+ // joystick centered at 2.5V
+ // adjust for VCC variation: adc * 5000 / vcc_mv (should have an accurate voltage measurement now)
+ // Adjust for 1V min and 4V max: adjusted - 512
+
+ long retval =  ( (((long) adc) * (2560*2) / vcc_mv - ee.center[index]) * 512 / ee.scale[index] + 512 );
+ if (retval < 0) retval = 0;
+ if (retval > 1023) retval = 1023;
+ return retval;
+}
+
 
   // *******************************************
   // put your main code here, to run repeatedly:
@@ -394,10 +426,56 @@ if (0)
 		smartbutton_test = 0;
 	}
 
+if ((ee.scale[0]!=0) && (ee.scale[0]!=0xffff)) {
+	readVcc();
+	long vcc_mv = readVcc();
+	//Serial.print(vcc_mv);
+	//Serial.print(" ");
+
+		// vcc adjusted analog input:
+		// adc / 5000 * vcc_mv
+	uint16_t a0 = analogRead(analogin[0]);
+	uint16_t a1 = analogRead(analogin[1]);
+
+/*
+	Serial.print("c");
+	Serial.print(ee.center[0]);
+	Serial.print("s");
+	Serial.print(ee.scale[0]);
+	Serial.print("a");
+	Serial.print(adjust_1v_4v_vcc(a0,vcc_mv,0));
+	Serial.print(" ");
+	Serial.print(adjust_1v_4v_vcc(a1,vcc_mv,1));
+	Serial.print(" ");
+*/
+
+	joystick.setXAxis(linearize_pot(ee.inv[0] ? 1023-adjust_1v_4v_vcc(a0,vcc_mv,0) : adjust_1v_4v_vcc(a0,vcc_mv,0),0));
+	joystick.setYAxis(linearize_pot(ee.inv[1] ? 1023-adjust_1v_4v_vcc(a1,vcc_mv,1) : adjust_1v_4v_vcc(a1,vcc_mv,1),1));
+} else {
+		// normal analog input
 	joystick.setXAxis(linearize_pot(ee.inv[0] ? 1023-analogRead(analogin[0]) : analogRead(analogin[0]),0));
 	joystick.setYAxis(linearize_pot(ee.inv[1] ? 1023-analogRead(analogin[1]) : analogRead(analogin[1]),1));
+}
+
+if ((ee.scale[2]!=0) && (ee.scale[2]!=0xffff)) {
+	long vcc_mv = readVcc();
+	uint16_t a2 = analogRead(analogin[2]);
+	uint16_t a3 = analogRead(analogin[3]);
+	joystick.setXAxis(linearize_pot(ee.inv[2] ? 1023-adjust_1v_4v_vcc(a2,vcc_mv,2) : adjust_1v_4v_vcc(a2,vcc_mv,2),2));
+	joystick.setYAxis(linearize_pot(ee.inv[3] ? 1023-adjust_1v_4v_vcc(a3,vcc_mv,3) : adjust_1v_4v_vcc(a3,vcc_mv,3),3));
+} else {
+		// normal analog input
 	joystick.setRxAxis(linearize_pot(ee.inv[2] ? 1023-analogRead(analogin[2]) : analogRead(analogin[2]),2));
 	joystick.setRyAxis(linearize_pot(ee.inv[3] ? 1023-analogRead(analogin[3]) : analogRead(analogin[3]),3));
+}
+
+if (0) {
+	Serial.print(analogRead(analogin[0])); Serial.print(" ");
+	Serial.print(analogRead(analogin[1])); Serial.print(" ");
+	//Serial.print(analogRead(analogin[2])); Serial.print(" ");
+	//Serial.print(analogRead(analogin[3])); Serial.print(" ");
+	Serial.print("\n");
+}
 
 	if (1) {
 		if (debug) {
@@ -483,6 +561,36 @@ if (0)
 			switch (uart_command) {
 				case 'z':
 					Serial.println("UsbJoy");
+					break;
+				case '.': { // set senter of joystick
+					long vcc_mv = readVcc();
+					ee.scale[uart_value] = 512;
+					ee.center[uart_value] = 512; // have to adjust the center before calculating a new center
+					ee.center[uart_value] = adjust_1v_4v_vcc(analogRead(analogin[uart_value]),vcc_mv,uart_value);
+
+					Serial.println("Move joystick axis to limits for 2s.");
+					uint16_t min_val = 1023;
+					uint16_t max_val = 0;
+						// find min/max values over 2 seconds
+					for (int i=0;i<2000;i++) {
+						vcc_mv = readVcc();
+						uint16_t val = adjust_1v_4v_vcc(analogRead(analogin[uart_value]),vcc_mv,uart_value);
+						if (val < min_val) min_val = val;
+						if (val > max_val) max_val = val;
+						delay(1);
+					}
+					max_val -= 512;
+					min_val = 512 - min_val;
+					if (max_val < min_val)
+						max_val = min_val;
+					ee.scale[uart_value] = max_val;
+					ee_update();
+					Serial.println("Done");
+					break;
+					}
+				case '?': // clear centering to 512 and disable scaling
+					ee.center[uart_value] = 512;
+					ee.scale[uart_value] = 0;
 					break;
 				case 'm':
 				case 'l': // set the desired smart-led LED setting "lX#" X=which led, #=led pattern
@@ -649,6 +757,11 @@ if (0)
 					Serial.println("'/#'=linearize_pots - #=hex enables");
 					Serial.println("'-#'=is dumb button - #=button num EEPROM");
 					Serial.println("'+#'=is smart button - #=button num EEPROM");
+					Serial.print("'.#'=center 2.5V joystick {");
+					for (int i=0;i<4;i++) {
+						Serial.print(ee.center[i]); Serial.print(",");
+						Serial.print(ee.scale[i]); Serial.print(", ");
+					} Serial.println("}");
 					Serial.println("'g'=Debug Data");
 					//Serial.println("'q'=PIC program assert MCLRn (J8)");
 					//Serial.println("'w'=PIC program write Data");
