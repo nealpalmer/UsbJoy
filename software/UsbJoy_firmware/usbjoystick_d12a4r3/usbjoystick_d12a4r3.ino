@@ -591,6 +591,7 @@ if (0) {
 				case '?': // clear centering to 512 and disable scaling
 					ee.center[uart_value] = 512;
 					ee.scale[uart_value] = 0;
+					ee_update();
 					break;
 				case 'm':
 				case 'l': // set the desired smart-led LED setting "lX#" X=which led, #=led pattern
@@ -762,6 +763,7 @@ if (0) {
 						Serial.print(ee.center[i]); Serial.print(",");
 						Serial.print(ee.scale[i]); Serial.print(", ");
 					} Serial.println("}");
+					Serial.println("'?#'=clear center 2.5V joystick values");
 					Serial.println("'g'=Debug Data");
 					//Serial.println("'q'=PIC program assert MCLRn (J8)");
 					//Serial.println("'w'=PIC program write Data");
