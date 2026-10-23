@@ -195,8 +195,11 @@ To add to this readme+files:
 # Future enhancements
 - Add a 5-pin direct programming header for connecting to SmartButton (no need for weird programming cable).
 - Move QR code to top side of board.
+- UsbJoy Rev3: 4-pin header, 1 button signal, 1 led signal, no CPU on button side for LED functionality.  Still compatible with smart buttons after making a 4-pin to 3-pin cable.
+- Dumbutton30mm: 4-pin header - nothing else (no cap, no res, no CPU).
 
 # History of major changes
+- 10/1/2025: Added an option for dumb buttons - fixes contention on the signal pin, and fixes spurious phantom button presses when using simple buttons.
 - 8/8/2025: Added RZ axis to have the full resolution of the 2400/rev encoder when used with FRC DriverStation that only has 200 values per axis.
 - 7/16/2025: Added MPLAB project files.
 - 7/16/2025: SmartButton pic programming working over USB
