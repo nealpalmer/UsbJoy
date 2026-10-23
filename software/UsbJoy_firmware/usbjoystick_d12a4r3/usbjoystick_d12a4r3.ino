@@ -7,6 +7,7 @@
 #include <EEPROM.h>
 #include <FastGPIO.h>
 #include "Joystick.h"
+#include "PluggableUSB.h"
 
 #undef LED_BUILTIN_RX
 #undef LED_BUILTIN_TX
@@ -80,6 +81,94 @@ int neopixel_repeat_timer;
 
 void ee_read(void);
 void ee_update(void);
+
+// *******************************
+// Start of USBRename
+// *******************************
+
+class USBRename : public PluggableUSBModule {
+  public:
+    USBRename(void);
+    int getInterface(uint8_t* interfaceCount);
+    int getDescriptor(USBSetup& setup);
+    bool setup(USBSetup& setup);
+
+  private:
+	char serial_num[16];
+    uint8_t epType[0];
+};
+
+static
+bool SendControl(u8 d)
+{
+  return USB_SendControl(0, &d, 1) == 1;
+}
+
+// Send a USB descriptor string. The string is stored in PROGMEM as a
+// plain ASCII string but is sent out as UTF-16 with the correct 2-byte
+// prefix
+// taken from Arduino's USBCore.cpp
+static bool USB_SendStringDescriptor(const char*string_P, size_t string_len, uint8_t flags) {
+        SendControl(2 + string_len * 2);
+        SendControl(3);
+        bool pgm = flags & TRANSFER_PGM;
+        for(size_t i = 0; i < string_len; i++) {
+                bool r = SendControl(pgm ? pgm_read_byte(&string_P[i]) : (u8)string_P[i]);
+                r &= SendControl(0); // high byte
+                if(!r) {
+                        return false;
+                }
+        }
+        return true;
+}
+
+USBRename::USBRename(void) : PluggableUSBModule(1, 1, epType) 
+{
+    PluggableUSB().plug(this);
+}
+
+int USBRename::getInterface(uint8_t* interfaceCount) {
+    return 0;
+}
+
+int USBRename::getDescriptor(USBSetup& setup)
+{
+    if(setup.wValueH != USB_STRING_DESCRIPTOR_TYPE) {
+        return 0;
+    }
+
+    //if(setup.wValueL == IMANUFACTURER && manufacturer_name) {
+        //return USB_SendStringDescriptor(manufacturer_name, strlen(manufacturer_name), 0);
+    //} else if (setup.wValueL == IPRODUCT && product_name) {
+        //return USB_SendStringDescriptor(product_name, strlen(product_name), 0);
+    //} else 
+	if (setup.wValueL == ISERIAL) {
+		serial_num[0] = 'S';
+		serial_num[1] = 'e';
+		serial_num[2] = 'r';
+		serial_num[3] = 'i';
+		serial_num[4] = 'a';
+		serial_num[5] = 'l';
+		serial_num[6] = '_';
+		ee_read();
+		serial_num[7] = ee.id + 'A';
+		serial_num[8] = 0;
+        return USB_SendStringDescriptor(serial_num, strlen(serial_num), 0);
+    }
+
+    return 0;
+}
+
+bool USBRename::setup(USBSetup& setup)
+{
+    return false;
+}
+
+USBRename dummy = USBRename();
+
+// *******************************
+// End of USBRename
+// *******************************
 
 void setup() {
   // put your setup code here, to run once:
