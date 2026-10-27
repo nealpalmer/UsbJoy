@@ -524,8 +524,6 @@ if ((ee.scale[0]!=0) && (ee.scale[0]!=0xffff)) {
 		// vcc adjusted analog input:
 		// adc / 5000 * vcc_mv
 	uint16_t a0 = analogRead(analogin[0]);
-	uint16_t a1 = analogRead(analogin[1]);
-
 /*
 	Serial.print("c");
 	Serial.print(ee.center[0]);
@@ -537,24 +535,37 @@ if ((ee.scale[0]!=0) && (ee.scale[0]!=0xffff)) {
 	Serial.print(adjust_1v_4v_vcc(a1,vcc_mv,1));
 	Serial.print(" ");
 */
-
 	joystick.setXAxis(linearize_pot(ee.inv[0] ? 1023-adjust_1v_4v_vcc(a0,vcc_mv,0) : adjust_1v_4v_vcc(a0,vcc_mv,0),0));
-	joystick.setYAxis(linearize_pot(ee.inv[1] ? 1023-adjust_1v_4v_vcc(a1,vcc_mv,1) : adjust_1v_4v_vcc(a1,vcc_mv,1),1));
 } else {
 		// normal analog input
 	joystick.setXAxis(linearize_pot(ee.inv[0] ? 1023-analogRead(analogin[0]) : analogRead(analogin[0]),0));
+}
+if ((ee.scale[1]!=0) && (ee.scale[1]!=0xffff)) {
+	readVcc();
+	long vcc_mv = readVcc();
+		// vcc adjusted analog input:
+		// adc / 5000 * vcc_mv
+	uint16_t a1 = analogRead(analogin[1]);
+	joystick.setYAxis(linearize_pot(ee.inv[1] ? 1023-adjust_1v_4v_vcc(a1,vcc_mv,1) : adjust_1v_4v_vcc(a1,vcc_mv,1),1));
+} else {
+		// normal analog input
 	joystick.setYAxis(linearize_pot(ee.inv[1] ? 1023-analogRead(analogin[1]) : analogRead(analogin[1]),1));
 }
 
 if ((ee.scale[2]!=0) && (ee.scale[2]!=0xffff)) {
 	long vcc_mv = readVcc();
 	uint16_t a2 = analogRead(analogin[2]);
-	uint16_t a3 = analogRead(analogin[3]);
-	joystick.setXAxis(linearize_pot(ee.inv[2] ? 1023-adjust_1v_4v_vcc(a2,vcc_mv,2) : adjust_1v_4v_vcc(a2,vcc_mv,2),2));
-	joystick.setYAxis(linearize_pot(ee.inv[3] ? 1023-adjust_1v_4v_vcc(a3,vcc_mv,3) : adjust_1v_4v_vcc(a3,vcc_mv,3),3));
+	joystick.setRxAxis(linearize_pot(ee.inv[2] ? 1023-adjust_1v_4v_vcc(a2,vcc_mv,2) : adjust_1v_4v_vcc(a2,vcc_mv,2),2));
 } else {
 		// normal analog input
 	joystick.setRxAxis(linearize_pot(ee.inv[2] ? 1023-analogRead(analogin[2]) : analogRead(analogin[2]),2));
+}
+if ((ee.scale[3]!=0) && (ee.scale[3]!=0xffff)) {
+	long vcc_mv = readVcc();
+	uint16_t a3 = analogRead(analogin[3]);
+	joystick.setRyAxis(linearize_pot(ee.inv[3] ? 1023-adjust_1v_4v_vcc(a3,vcc_mv,3) : adjust_1v_4v_vcc(a3,vcc_mv,3),3));
+} else {
+		// normal analog input
 	joystick.setRyAxis(linearize_pot(ee.inv[3] ? 1023-analogRead(analogin[3]) : analogRead(analogin[3]),3));
 }
 
