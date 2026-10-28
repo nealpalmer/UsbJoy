@@ -374,9 +374,10 @@ void loop() {
 	digitalWrite(LED_BUILTIN_myTX, txled); // mostly override other libraries's driving of the LED
 	digitalWrite(LED_BUILTIN_myRX, (millis()>>8)&1);
 
-		// toggle one of the virtual buttons so that you can see it is updating in any joystick gui
+		// toggle one of the virtual buttons so that you can see it is updating in any joystick gui.
+		// Should press about 4x/second.  Or about 8 changes/second (important for detecting that the joystick isn't connected to FRC robot anymore).
 	if (TOGGLING_BUTTON_COUNT>0)
-		joystick.setButton(BUTTON_COUNT + IDBUTTON_COUNT, ((millis()>>8)&1) ^ 1); // make the upper joystick input toggle
+		joystick.setButton(BUTTON_COUNT + IDBUTTON_COUNT, ((millis()>>7)&1) ^ 1); // make the upper joystick input toggle
 
 	if ((millis()%1000)==0 /*|| (neopixel_repeat_timer > millis()+10000)*/) {
 		Serial1.write('n');
